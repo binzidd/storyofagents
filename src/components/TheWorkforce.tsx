@@ -27,8 +27,8 @@ function FlowAgentViz({ isVisible }: { isVisible: boolean }) {
           >
             {step.icon}
           </div>
-          <div className="flex-1 h-9 rounded-lg glass-card flex items-center px-3">
-            <span className="text-white text-xs font-medium">{step.label}</span>
+          <div className="flex-1 h-9 rounded-lg light-card flex items-center px-3">
+            <span className="text-gray-800 text-xs font-medium">{step.label}</span>
           </div>
           {i < steps.length - 1 && (
             <div className="absolute -ml-1 text-blue-500 text-sm">↓</div>
@@ -237,7 +237,7 @@ function LangGraphViz({ isVisible }: { isVisible: boolean }) {
                 {node.icon}
               </text>
               {/* Label below */}
-              <text x={cx} y={cy + 22} textAnchor="middle" fill="white" fontSize="8" fontWeight="600" fontFamily="Inter, sans-serif">
+              <text x={cx} y={cy + 22} textAnchor="middle" fill="#1f2937" fontSize="8" fontWeight="600" fontFamily="Inter, sans-serif">
                 {node.label}
               </text>
             </motion.g>
@@ -255,8 +255,9 @@ export default function TheWorkforce() {
   const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
 
   return (
-    <section id="workforce" ref={ref} className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050814] via-[#08091c] to-[#050814]" />
+    <section id="workforce" ref={ref} className="relative py-32 overflow-hidden bg-[#F9F8F5]">
+      <div className="absolute top-0 left-0 right-0 section-divider" />
+      <div className="absolute bottom-0 left-0 right-0 section-divider" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-violet-500/5 blur-3xl" />
 
       <motion.div style={{ opacity }} className="relative z-10 max-w-7xl mx-auto px-6">
@@ -264,17 +265,17 @@ export default function TheWorkforce() {
         {/* Section header */}
         <div className="text-center mb-20">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 mb-6">
-            <span className="text-emerald-400 text-xs font-medium tracking-widest uppercase">Phase 03</span>
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 mb-6">
+            <span className="text-emerald-700 text-xs font-medium tracking-widest uppercase">Phase 03</span>
           </motion.div>
           <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+            className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
             From assistant<br />to <span className="text-emerald-400">workforce.</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-xl text-gray-400 max-w-3xl mx-auto">
+            className="text-xl text-gray-600 max-w-3xl mx-auto">
             Not all AI agents are built alike. The architecture you choose determines
             whether your AI is a reliable processor or an autonomous problem-solver.
           </motion.p>
@@ -285,26 +286,26 @@ export default function TheWorkforce() {
           {/* Flow Agents */}
           <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="glass-card rounded-2xl p-8 border border-blue-500/20">
+            className="light-card rounded-2xl p-8 border border-blue-200">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl">🔄</div>
               <div>
-                <div className="text-white font-bold text-xl">Flow Agents</div>
+                <div className="text-gray-900 font-bold text-xl">Flow Agents</div>
                 <div className="text-blue-400 text-sm">Deterministic Processors</div>
               </div>
               <div className="ml-auto px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-medium">Predictable</div>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+            <p className="text-gray-600 text-sm leading-relaxed mb-6">
               Like a well-engineered assembly line. Every step is defined, auditable, and repeatable.
-              <span className="text-white"> Step A always precedes Step B.</span>
+              <span className="text-gray-900"> Step A always precedes Step B.</span>
               Regulators love them. Auditors can trace every decision.
             </p>
             <FlowAgentViz isVisible={isInView} />
-            <div className="mt-6 pt-6 border-t border-white/5">
+            <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="text-xs text-gray-500 font-medium mb-3 uppercase tracking-widest">Best For</div>
               <div className="flex flex-wrap gap-2">
                 {["KYC/AML Routing", "Month-End Close", "Trade Confirmation", "Regulatory Reporting"].map(tag => (
-                  <span key={tag} className="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs border border-blue-500/20">{tag}</span>
+                  <span key={tag} className="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs border border-blue-200">{tag}</span>
                 ))}
               </div>
             </div>
@@ -313,26 +314,26 @@ export default function TheWorkforce() {
           {/* Function Agents */}
           <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="glass-card rounded-2xl p-8 border border-violet-500/20">
+            className="light-card rounded-2xl p-8 border border-violet-200">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center text-2xl">🧠</div>
               <div>
-                <div className="text-white font-bold text-xl">Function Agents</div>
+                <div className="text-gray-900 font-bold text-xl">Function Agents</div>
                 <div className="text-violet-400 text-sm">Autonomous Problem Solvers</div>
               </div>
               <div className="ml-auto px-3 py-1 rounded-full bg-violet-500/20 text-violet-400 text-xs font-medium">Adaptive</div>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
+            <p className="text-gray-600 text-sm leading-relaxed mb-6">
               Give them a goal, not a script.
-              <span className="text-white"> &ldquo;Identify the top 5 reasons our EBITDA margin compressed this quarter&rdquo;</span> —
+              <span className="text-gray-900"> &ldquo;Identify the top 5 reasons our EBITDA margin compressed this quarter&rdquo;</span> —
               and they determine which data sources to query, what analyses to run, and how to synthesise the narrative.
             </p>
             <FunctionAgentViz isVisible={isInView} />
-            <div className="mt-6 pt-6 border-t border-white/5">
+            <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="text-xs text-gray-500 font-medium mb-3 uppercase tracking-widest">Best For</div>
               <div className="flex flex-wrap gap-2">
                 {["Earnings Analysis", "M&A Due Diligence", "Budget Variance", "Scenario Modelling"].map(tag => (
-                  <span key={tag} className="px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs border border-violet-500/20">{tag}</span>
+                  <span key={tag} className="px-3 py-1 rounded-full bg-violet-50 text-violet-600 text-xs border border-violet-200">{tag}</span>
                 ))}
               </div>
             </div>
@@ -342,11 +343,11 @@ export default function TheWorkforce() {
         {/* Strategic Choice callout */}
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="glass-card rounded-2xl p-6 border border-white/5 text-center max-w-3xl mx-auto mb-32">
-          <div className="text-white font-semibold mb-2">The Strategic Choice</div>
-          <p className="text-gray-400 text-sm leading-relaxed">
+          className="light-card rounded-2xl p-6 border border-gray-200 text-center max-w-3xl mx-auto mb-32">
+          <div className="text-gray-900 font-semibold mb-2">The Strategic Choice</div>
+          <p className="text-gray-600 text-sm leading-relaxed">
             Leading financial institutions aren&apos;t choosing between Flow and Function —
-            they&apos;re deploying <span className="text-white">hybrid architectures</span>.
+            they&apos;re deploying <span className="text-gray-900">hybrid architectures</span>.
             Flow agents handle the regulated core; Function agents tackle the complex edge cases humans used to own.
           </p>
         </motion.div>
@@ -355,17 +356,17 @@ export default function TheWorkforce() {
         <div id="langgraph" className="scroll-mt-20">
           <div className="text-center mb-16">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 mb-6">
-              <span className="text-amber-400 text-xs font-medium tracking-widest uppercase">Phase 04 — LangGraph</span>
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-200 bg-amber-50 mb-6">
+              <span className="text-amber-700 text-xs font-medium tracking-widest uppercase">Phase 04 — LangGraph</span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+              className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
               Workflows that<br /><span className="text-amber-400">think in graphs.</span>
             </motion.h2>
             <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xl text-gray-400 max-w-3xl mx-auto">
+              className="text-xl text-gray-600 max-w-3xl mx-auto">
               LangGraph treats AI workflows as directed graphs — nodes are AI tasks, edges are conditions.
               Unlike a linear pipeline, a graph can branch, loop, and invoke human checkpoints.
               It&apos;s the difference between a conveyor belt and a decision tree.
@@ -377,15 +378,15 @@ export default function TheWorkforce() {
             {/* Left: what LangGraph is */}
             <div className="space-y-6">
               <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                className="glass-card rounded-2xl p-6 border border-amber-500/20">
+                className="light-card rounded-2xl p-6 border border-amber-200">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-2xl flex-shrink-0">🕸</div>
                   <div>
-                    <div className="text-white font-bold text-lg mb-2">Why Graphs Beat Pipelines</div>
-                    <p className="text-gray-400 text-sm leading-relaxed">
+                    <div className="text-gray-900 font-bold text-lg mb-2">Why Graphs Beat Pipelines</div>
+                    <p className="text-gray-600 text-sm leading-relaxed">
                       A pipeline can only go forward. A graph can route exceptions to human review,
                       loop back when data quality fails, and converge multiple parallel checks into a single decision node.
-                      <span className="text-white"> It&apos;s how real financial workflows actually behave.</span>
+                      <span className="text-gray-900"> It&apos;s how real financial workflows actually behave.</span>
                     </p>
                   </div>
                 </div>
@@ -415,13 +416,13 @@ export default function TheWorkforce() {
                 <motion.div key={item.title}
                   initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
                   transition={{ delay: i * 0.12 }}
-                  className="glass-card rounded-xl p-4 border border-white/5 flex gap-4">
+                  className="light-card rounded-xl p-4 border border-gray-200 flex gap-4">
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center text-lg flex-shrink-0"
                     style={{ background: `${item.color}20`, border: `1px solid ${item.color}40` }}>
                     {item.icon}
                   </div>
                   <div>
-                    <div className="text-white font-semibold text-sm mb-1">{item.title}</div>
+                    <div className="text-gray-900 font-semibold text-sm mb-1">{item.title}</div>
                     <p className="text-gray-500 text-xs leading-relaxed">{item.desc}</p>
                   </div>
                 </motion.div>
@@ -432,10 +433,10 @@ export default function TheWorkforce() {
             <div>
               <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
-                className="glass-card rounded-2xl p-6 border border-amber-500/20">
+                className="light-card rounded-2xl p-6 border border-amber-200">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <div className="text-white font-bold">Month-End Close — LangGraph</div>
+                    <div className="text-gray-900 font-bold">Month-End Close — LangGraph</div>
                     <div className="text-amber-400 text-xs mt-0.5">Financial Accountant Workflow</div>
                   </div>
                   <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/30">
@@ -447,7 +448,7 @@ export default function TheWorkforce() {
                 <LangGraphViz isVisible={isInView} />
 
                 {/* Legend */}
-                <div className="mt-4 pt-4 border-t border-white/5 grid grid-cols-3 gap-2">
+                <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-3 gap-2">
                   {[
                     { color: "#3b82f6", label: "Process node" },
                     { color: "#f59e0b", label: "Decision node", dashed: true },
@@ -465,7 +466,7 @@ export default function TheWorkforce() {
               {/* Before / After */}
               <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="mt-4 glass-card rounded-xl p-4 border border-white/5">
+                className="mt-4 light-card rounded-xl p-4 border border-gray-200">
                 <div className="text-xs text-gray-500 font-medium mb-3 uppercase tracking-widest">Month-End Close: Before vs. After</div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-lg bg-red-500/5 border border-red-500/20 p-3">

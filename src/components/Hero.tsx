@@ -164,7 +164,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 mb-8"
         >
           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-          <span className="text-blue-400 text-xs font-medium tracking-widest uppercase">Finance Leadership Briefing</span>
+          <span className="text-blue-400 text-xs font-medium tracking-widest uppercase">FS Analytics · AI Briefing · March 2026</span>
         </motion.div>
 
         {/* Main headline */}
@@ -253,6 +253,15 @@ export default function Hero() {
           >
             <div className="w-1 h-2 rounded-full bg-blue-400" />
           </motion.div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          className="absolute bottom-8 right-8 text-right"
+        >
+          <div className="text-gray-600 text-xs">Presented by</div>
+          <div className="text-white text-sm font-semibold">Binay</div>
         </motion.div>
       </motion.div>
     </section>
