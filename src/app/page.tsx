@@ -1,6 +1,7 @@
 "use client";
 
 import Hero from "@/components/Hero";
+import JourneyMap from "@/components/JourneyMap";
 import InternPhase from "@/components/InternPhase";
 import TheWorkforce from "@/components/TheWorkforce";
 import MCPSection from "@/components/MCPSection";
@@ -14,6 +15,7 @@ export default function Home() {
     <main className="relative bg-[#050814] min-h-screen">
       <Navigation />
       <Hero />
+      <JourneyMap />
       <InternPhase />
       <TheWorkforce />
       <MCPSection />
