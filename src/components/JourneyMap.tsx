@@ -118,10 +118,34 @@ export default function JourneyMap() {
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3 leading-tight">
             Six Capabilities.<br />One Strategic Briefing.
           </h2>
-          <p className="text-gray-500 text-sm max-w-xl mx-auto">
+          <p className="text-gray-500 text-sm max-w-xl mx-auto mb-8">
             From tool-augmented AI to autonomous agent networks, each chapter builds on the last.
             Click any stop to navigate, or scroll to explore.
           </p>
+
+          {/* Journey progress arrow */}
+          <motion.div initial={{ opacity:0, y:10 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+            transition={{ delay:0.3 }}
+            className="flex items-center justify-center gap-1.5 flex-wrap">
+            {[
+              { label:"Chat AI",          icon:"💬", color:"#64748b" },
+              { label:"Tool Use",         icon:"🔧", color:"#8b5cf6" },
+              { label:"Agent Networks",   icon:"🤖", color:"#10b981" },
+              { label:"Orchestration",    icon:"🕸", color:"#f59e0b" },
+              { label:"AI Finance",       icon:"🏦", color:"#3b82f6" },
+            ].map((step, i, arr) => (
+              <div key={step.label} className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs font-medium"
+                  style={{ color: step.color }}>
+                  <span>{step.icon}</span>
+                  <span className="text-gray-700">{step.label}</span>
+                </div>
+                {i < arr.length - 1 && (
+                  <span className="text-gray-300 text-sm font-bold">›</span>
+                )}
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
 
         {/* Vertical timeline */}

@@ -109,7 +109,7 @@ function LangGraphViz({ playing, done }: { playing: boolean; done: boolean }) {
     if (!playing) { setStep(-1); return; }
     setStep(0);
     GRAPH_NODES.forEach((_, i) => {
-      setTimeout(() => setStep(i + 1), (i + 1) * 420);
+      setTimeout(() => setStep(i + 1), (i + 1) * 700);
     });
   }, [playing, done]);
 
@@ -224,7 +224,7 @@ function DaysCounter({ playing }: { playing: boolean }) {
       idx++;
       if (idx < steps.length) setDays(steps[idx]);
       else clearInterval(interval);
-    }, 320);
+    }, 850);
     return () => clearInterval(interval);
   }, [playing]);
 
@@ -276,7 +276,7 @@ export default function TheWorkforce() {
     if (graphPlaying) return;
     setGraphPlaying(true);
     setGraphDone(false);
-    setTimeout(() => { setGraphPlaying(false); setGraphDone(true); }, 3500);
+    setTimeout(() => { setGraphPlaying(false); setGraphDone(true); }, 6500);
   };
 
   return (
