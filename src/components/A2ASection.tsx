@@ -9,16 +9,16 @@ interface Msg {
 }
 
 const MESSAGES: Msg[] = [
-  { from:"Quant Agent",      to:"All",         text:"Recommending A$75M AUD/USD short at 0.6318 spot. RBA held rates. USD momentum: +2.1\u03c3. Macro regime supports USD strength. Risk/reward: 1:2.9. Holding period: 3-5 days.",       color:"#3b82f6", icon:"📊", delay:0,    type:"proposal"  },
-  { from:"Risk Agent",       to:"Quant Agent", text:"Flagging: this position consumes 52% of remaining daily VaR budget. Current AUD short book already A$120M notional. Aggregate exposure breaches single-currency concentration limit.",   color:"#ef4444", icon:"🔴", delay:1400, type:"challenge" },
-  { from:"Quant Agent",      to:"Risk Agent",  text:"Acknowledged. Revised proposal: A$45M notional. VaR consumption drops to 31%. Signal integrity maintained at reduced size. Recommending proceeding.",                                   color:"#3b82f6", icon:"📊", delay:2800, type:"proposal"  },
-  { from:"Compliance Agent", to:"All",         text:"ASIC position limits reviewed. A$45M AUD/USD within approved mandate. No restricted counterparties. Client suitability confirmed. Approved with standard T+1 reporting.",               color:"#f59e0b", icon:"⚖️", delay:4200, type:"approval"  },
-  { from:"Audit Agent",      to:"System",      text:"Decision logged: Trade #FX-2026-1103. Full deliberation chain recorded: initial proposal, risk challenge, size revision, compliance sign-off. APRA audit trail: complete.",            color:"#8b5cf6", icon:"📋", delay:5400, type:"log"       },
-  { from:"Execution Agent",  to:"All",         text:"Executing A$45M AUD/USD short at 0.6316 (2bp slippage, within tolerance). Confirmation: EXEC-20260313-0147. P&L attribution and position limits updated in real time.",               color:"#10b981", icon:"⚡", delay:6600, type:"final"     },
+  { from:"Quant Agent",      to:"All",         text:"Alert: 4.3\u03c3 intraday drawdown detected in Portfolio MP-4492. ASX Healthcare sector -6.8% on adverse PBAC ruling. Unrealised P&L: -A$1.24M. Breach of 3\u03c3 monitoring threshold. Convening agent council.",              color:"#3b82f6", icon:"📊", delay:0,    type:"proposal"  },
+  { from:"Risk Agent",       to:"Quant Agent", text:"Confirmed: Healthcare weighting 19.4% vs benchmark 13.2%. Active overweight: 6.2%. VaR at 99% confidence: A$2.1M. Stop-loss not yet breached. Sector concentration limit: approaching. Recommending partial reduction.",          color:"#ef4444", icon:"🔴", delay:1400, type:"challenge" },
+  { from:"Quant Agent",      to:"Risk Agent",  text:"Revised: if sector continues -2% into close, unrealised loss exceeds A$1.6M. Recommend reducing Healthcare from 19.4% to 15.0%. Model signal: recovery probability within 5 days: 41%. Downside risk outweighs carry.",            color:"#3b82f6", icon:"📊", delay:2800, type:"proposal"  },
+  { from:"Compliance Agent", to:"All",         text:"ASIC retail significant loss check: A$1.24M unrealised is below the A$2M mandatory notification threshold. No client disclosure required at this stage. Proposed rebalancing within fund mandate. Approved, subject to best-execution.", color:"#f59e0b", icon:"⚖️", delay:4200, type:"approval"  },
+  { from:"Audit Agent",      to:"System",      text:"Movement event logged: #MV-2026-0313. Drawdown breach, full deliberation chain, and provisional rebalance decision recorded. Portfolio: MP-4492. APRA audit trail: complete. Escalation monitor: active.",                           color:"#8b5cf6", icon:"📋", delay:5400, type:"log"       },
+  { from:"Execution Agent",  to:"All",         text:"Staged: reduce ASX Healthcare from 19.4% to 15.1% via 4 limit orders. Estimated slippage: <0.3%. Target completion: 14:30 AEST. P&L attribution and mandate compliance updated in real time. Confirmation: EXEC-20260313-0892.",    color:"#10b981", icon:"⚡", delay:6600, type:"final"     },
 ];
 
 const AGENTS = [
-  { id:"quant",      label:"Quant Agent",     icon:"📊", color:"#3b82f6", role:"Identifies signals and strategies" },
+  { id:"quant",      label:"Quant Agent",     icon:"📊", color:"#3b82f6", role:"Detects signals and movement alerts" },
   { id:"risk",       label:"Risk Agent",       icon:"🔴", color:"#ef4444", role:"Challenges exposure and limits"   },
   { id:"compliance", label:"Compliance Agent", icon:"⚖️", color:"#f59e0b", role:"Enforces rules and mandates"      },
   { id:"audit",      label:"Audit Agent",      icon:"📋", color:"#8b5cf6", role:"Records all decisions"            },
@@ -123,8 +123,8 @@ export default function A2ASection() {
             {/* Scenario trigger */}
             <div className="light-card rounded-2xl p-5">
               <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Scenario</div>
-              <div className="text-sm font-semibold text-gray-900 mb-1">AUD/USD Trade Decision</div>
-              <div className="text-xs text-gray-500 mb-4">A$75M position proposal. Quant triggers agent council</div>
+              <div className="text-sm font-semibold text-gray-900 mb-1">Portfolio Movement Alert</div>
+              <div className="text-xs text-gray-500 mb-4">4.3\u03c3 drawdown detected. Quant convenes agent council.</div>
               <motion.button onClick={running ? undefined : run}
                 whileHover={!running?{scale:1.02}:{}} whileTap={!running?{scale:0.97}:{}}
                 className={`w-full py-3 rounded-xl font-semibold text-sm transition-all ${
@@ -147,8 +147,8 @@ export default function A2ASection() {
             <div className="light-card rounded-2xl overflow-hidden">
               <div className="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-gray-900 text-sm">Agent Council · FX Trade Decision</div>
-                  <div className="text-xs text-gray-500 mt-0.5">Quant recommends A$75M AUD/USD short at 0.6318 spot</div>
+                  <div className="font-semibold text-gray-900 text-sm">Agent Council · Movement Analysis</div>
+                  <div className="text-xs text-gray-500 mt-0.5">Unusual sector drawdown detected in Portfolio MP-4492</div>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className={`w-2 h-2 rounded-full ${running?"bg-amber-500 animate-pulse":done?"bg-emerald-500":"bg-gray-300"}`} />
@@ -210,7 +210,7 @@ export default function A2ASection() {
                   <motion.div initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }}
                     className="rounded-xl p-3 bg-emerald-50 border border-emerald-200 flex items-center gap-2">
                     <span className="text-emerald-600 text-sm font-semibold">Scenario complete</span>
-                    <span className="text-gray-500 text-xs">· {MESSAGES.length} interactions · full audit trail logged · APRA compliant</span>
+                    <span className="text-gray-500 text-xs">· {MESSAGES.length} interactions · rebalance staged · full audit trail logged</span>
                   </motion.div>
                 )}
               </div>
