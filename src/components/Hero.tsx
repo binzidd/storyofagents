@@ -97,7 +97,7 @@ export default function Hero() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 bg-white shadow-sm mb-10">
           <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-          <span className="text-gray-500 text-xs font-medium tracking-widest uppercase">FS Analytics · AI Briefing · March 2026</span>
+          <span className="text-gray-500 text-xs font-medium tracking-widest uppercase">AI Briefing · March 2026</span>
         </motion.div>
 
         {/* Main headline */}

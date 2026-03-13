@@ -56,8 +56,8 @@ export default function Navigation() {
               <span className="text-white text-xs font-black">FS</span>
             </div>
             <div>
-              <div className="font-bold text-sm leading-none text-gray-900">FS Analytics</div>
-              <div className="text-xs leading-none mt-0.5 text-blue-600">AI Briefing · March 2026</div>
+              <div className="font-bold text-sm leading-none text-gray-900">AI Briefing</div>
+              <div className="text-xs leading-none mt-0.5 text-blue-600">March 2026</div>
             </div>
           </div>
 

@@ -72,14 +72,14 @@ export default function A2ASection() {
           <motion.h2 initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             transition={{ duration:0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-            Five specialists. Zero meetings.<br /><span className="text-violet-600">Board pack at T+2.</span>
+            Five specialists. Zero meetings.<br /><span className="text-emerald-500">Board pack at T+2.</span>
           </motion.h2>
           <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
             transition={{ delay:0.2 }}
             className="text-xl text-gray-500 max-w-3xl mx-auto">
-            LangGraph orchestrates the process. Our agent council makes it defensible.
-            Each specialist challenges the others&apos; outputs before a single number reaches the board.
-            The close is collaborative, auditable, and complete by T+2.
+            Specialist agents with defined roles review and challenge each other&apos;s work in real time.
+            Disputes are resolved in minutes. Every number is substantiated before it reaches the board.
+            Collaborative, auditable, and complete by T+2.
           </motion.p>
         </div>
 
@@ -141,13 +141,13 @@ export default function A2ASection() {
               )}
             </div>
 
-            {/* Comparison to LangGraph */}
+            {/* How it works */}
             <div className="light-card rounded-2xl p-5 border border-violet-100">
-              <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">vs LangGraph</div>
+              <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">How it works</div>
               <div className="space-y-2.5">
                 {[
-                  { label: "LangGraph", desc: "Automates sequential workflow", icon: "🕸", color: "#f59e0b" },
-                  { label: "A2A Council", desc: "Agents audit each other in parallel", icon: "🌐", color: "#8b5cf6" },
+                  { label: "Orchestration", desc: "Automates the sequential workflow", icon: "🕸", color: "#f59e0b" },
+                  { label: "Agent Council", desc: "Specialists audit each other in parallel", icon: "🌐", color: "#8b5cf6" },
                 ].map(item => (
                   <div key={item.label} className="flex items-start gap-2.5">
                     <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm flex-shrink-0 mt-0.5"

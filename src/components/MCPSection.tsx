@@ -51,7 +51,13 @@ export default function MCPSection() {
           <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-            15 point-to-point integrations<br /><span className="text-cyan-600">replaced by one standard.</span>
+            15 point-to-point integrations<br />
+            <span className="relative inline-block">
+              <span className="text-cyan-600">replaced by one standard.</span>
+              <motion.span initial={{ scaleX:0 }} whileInView={{ scaleX:1 }} viewport={{ once:true }}
+                transition={{ duration:0.8, delay:0.7, ease:"easeOut" }}
+                className="absolute bottom-1 left-0 h-[4px] bg-cyan-500 rounded-full origin-left block" />
+            </span>
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             transition={{ delay: 0.2 }}

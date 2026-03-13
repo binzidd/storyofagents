@@ -3,72 +3,143 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 
 function FlowAgentViz({ isVisible }: { isVisible: boolean }) {
+  const [activeStep, setActiveStep] = useState(-1);
+
+  useEffect(() => {
+    if (!isVisible) { setActiveStep(-1); return; }
+    setActiveStep(0);
+    [0,1,2,3,4].forEach((_, i) => {
+      setTimeout(() => setActiveStep(i + 1), (i + 1) * 700);
+    });
+  }, [isVisible]);
+
   const steps = [
-    { label: "Trial Balance Received", icon: "📥", color: "#3b82f6" },
-    { label: "Auto-Reconciliation Run", icon: "✅", color: "#3b82f6" },
-    { label: "Variance Flagged",        icon: "⚠️", color: "#f59e0b" },
-    { label: "Journal Entries Posted",  icon: "📒", color: "#3b82f6" },
-    { label: "Month-End Pack Generated",icon: "📊", color: "#10b981" },
+    { label: "Sub-ledgers close",        note: "T+0 trigger",  icon: "📥", color: "#3b82f6" },
+    { label: "Run 847 GL checks",        note: "8 min",         icon: "⚙️", color: "#3b82f6" },
+    { label: "Flag 3 exceptions",        note: "Needs review",  icon: "⚠️", color: "#f59e0b" },
+    { label: "Post approved journals",   note: "Auto-posted",   icon: "📒", color: "#3b82f6" },
+    { label: "Draft report generated",   note: "Ready at T+1",  icon: "📊", color: "#10b981" },
   ];
+
   return (
-    <div className="space-y-2">
-      {steps.map((step, i) => (
-        <motion.div key={step.label} initial={{ opacity: 0, x: -30 }}
-          animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-          transition={{ duration: 0.5, delay: i * 0.18 }}
-          className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg flex items-center justify-center text-base flex-shrink-0"
-            style={{ background: `${step.color}20`, border: `1px solid ${step.color}40` }}>
-            {step.icon}
-          </div>
-          <div className="flex-1 h-9 rounded-lg light-card flex items-center px-3">
-            <span className="text-gray-800 text-xs font-medium">{step.label}</span>
-          </div>
-        </motion.div>
-      ))}
+    <div>
+      <div className="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Example: monthly reconciliation</div>
+      <div className="space-y-1.5">
+        {steps.map((step, i) => {
+          const isDone    = activeStep > i;
+          const isCurrent = activeStep === i;
+          const clr       = isDone || isCurrent ? step.color : "#9CA3AF";
+          return (
+            <div key={step.label}>
+              <motion.div
+                animate={{
+                  background: isDone ? `${step.color}10` : isCurrent ? `${step.color}06` : "transparent",
+                  borderColor: isDone ? `${step.color}40` : isCurrent ? `${step.color}25` : "#E5E7EB",
+                }}
+                transition={{ duration: 0.3 }}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl border">
+                <motion.div
+                  animate={{ background: isDone || isCurrent ? `${step.color}20` : "#F3F4F6" }}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0"
+                  style={{ border: `1px solid ${clr}30` }}>
+                  <AnimatePresence mode="wait">
+                    <motion.span key={isDone ? "done" : "icon"}
+                      initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }}
+                      transition={{ duration: 0.2 }}>
+                      {isDone ? "✓" : step.icon}
+                    </motion.span>
+                  </AnimatePresence>
+                </motion.div>
+                <span className={`text-xs font-medium flex-1 ${isDone || isCurrent ? "text-gray-800" : "text-gray-400"}`}>
+                  {step.label}
+                </span>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  {isCurrent && (
+                    <motion.div className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{ background: step.color }}
+                      animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 0.9, repeat: Infinity }} />
+                  )}
+                  <span className="text-xs font-mono" style={{ color: isDone ? step.color : "#C4C4C4" }}>
+                    {step.note}
+                  </span>
+                </div>
+              </motion.div>
+              {i < steps.length - 1 && (
+                <motion.div className="ml-7 w-px h-2"
+                  animate={{ background: activeStep > i ? `${step.color}40` : "#E5E7EB" }}
+                  transition={{ duration: 0.3 }} />
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
 
 function FunctionAgentViz({ isVisible }: { isVisible: boolean }) {
-  const nodes = [
-    { label: "Reduce Tax Liability",   x: 50, y: 8,  color: "#8b5cf6", main: true },
-    { label: "Harvest Losses",         x: 12, y: 42, color: "#8b5cf6" },
-    { label: "Rebalance Allocation",   x: 84, y: 38, color: "#8b5cf6" },
-    { label: "Check Wash Sale Rules",  x: 28, y: 76, color: "#ef4444" },
-    { label: "Execute Trades",         x: 70, y: 74, color: "#10b981" },
+  const branches = [
+    { label: "Query GL data",       found: "A$14M gap identified",      x: 10, y: 42, color: "#3b82f6" },
+    { label: "Check sales pipeline",found: "3 renewals delayed in Q3",  x: 82, y: 38, color: "#8b5cf6" },
+    { label: "Review contracts",    found: "Seasonal renewal pattern",  x: 22, y: 80, color: "#f59e0b" },
+    { label: "Compare to forecast", found: "Sector softness confirmed", x: 74, y: 78, color: "#10b981" },
   ];
-  const connections = [[0,1],[0,2],[1,3],[2,4],[3,4],[1,2]];
   return (
-    <div className="relative h-60">
-      <svg className="absolute inset-0 w-full h-full">
-        {connections.map(([from, to], i) => {
-          const f = nodes[from], t = nodes[to];
-          return (
-            <motion.line key={i} x1={`${f.x}%`} y1={`${f.y+6}%`} x2={`${t.x}%`} y2={`${t.y+6}%`}
-              stroke="#8b5cf6" strokeWidth="1" strokeOpacity="0.3" strokeDasharray="4 4"
+    <div>
+      <div className="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Example: Why did revenue miss this quarter?</div>
+      <div className="relative h-64">
+        <svg className="absolute inset-0 w-full h-full pointer-events-none">
+          {branches.map((branch, i) => (
+            <motion.line key={i}
+              x1="50%" y1="18%"
+              x2={`${branch.x + 8}%`} y2={`${branch.y}%`}
+              stroke={branch.color} strokeWidth="1.5" strokeOpacity="0.4"
+              strokeDasharray="4 3"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={isVisible ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-              transition={{ duration: 0.8, delay: i * 0.1 + 0.4 }}
+              transition={{ duration: 0.6, delay: i * 0.2 + 0.3 }}
             />
-          );
-        })}
-      </svg>
-      {nodes.map((node, i) => (
-        <motion.div key={node.label} initial={{ opacity: 0, scale: 0 }}
-          animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-          transition={{ duration: 0.5, delay: i * 0.15 }}
-          className="absolute -translate-x-1/2 -translate-y-1/2"
-          style={{ left: `${node.x}%`, top: `${node.y+6}%` }}>
+          ))}
+        </svg>
+
+        {/* Central goal node */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.4 }}
+          className="absolute left-1/2 -translate-x-1/2"
+          style={{ top: "4%" }}>
           <motion.div
-            animate={isVisible ? { boxShadow: [`0 0 8px ${node.color}30`,`0 0 22px ${node.color}70`,`0 0 8px ${node.color}30`] } : {}}
-            transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-            className={`rounded-xl px-2 py-1.5 text-center ${node.main ? "border-2" : "border"}`}
-            style={{ background: `${node.color}15`, borderColor: `${node.color}60`, minWidth: "90px" }}>
-            <div className="text-xs font-medium" style={{ color: node.color }}>{node.label}</div>
+            animate={isVisible ? { boxShadow: ["0 0 0px #8b5cf620","0 0 20px #8b5cf640","0 0 0px #8b5cf620"] } : {}}
+            transition={{ duration: 2.5, repeat: Infinity }}
+            className="px-4 py-2 rounded-2xl text-center border-2"
+            style={{ background: "#8b5cf615", borderColor: "#8b5cf660", minWidth: 160 }}>
+            <div className="text-xs font-bold text-violet-600">Goal</div>
+            <div className="text-xs font-semibold text-gray-800 mt-0.5 leading-tight">Revenue miss: A$14M</div>
           </motion.div>
         </motion.div>
-      ))}
+
+        {/* Branch nodes */}
+        {branches.map((branch, i) => (
+          <motion.div key={branch.label}
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
+            transition={{ duration: 0.4, delay: i * 0.2 + 0.5 }}
+            className="absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: `${branch.x + 8}%`, top: `${branch.y}%` }}>
+            <div className="rounded-xl px-2.5 py-2 text-center border"
+              style={{ background: `${branch.color}12`, borderColor: `${branch.color}40`, minWidth: 100 }}>
+              <div className="text-xs font-semibold leading-tight" style={{ color: branch.color }}>{branch.label}</div>
+              <motion.div
+                initial={{ opacity: 0, height: 0 }} animate={isVisible ? { opacity: 1, height: "auto" } : {}}
+                transition={{ delay: i * 0.2 + 1.2, duration: 0.3 }}
+                className="overflow-hidden">
+                <div className="text-xs text-gray-500 mt-1 leading-tight">{branch.found}</div>
+              </motion.div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -296,7 +367,13 @@ export default function TheWorkforce() {
           <motion.h2 initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             transition={{ duration:0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-            Understanding Architecture.<br /><span className="text-emerald-500">Right tool. Right job.</span>
+            Understanding Architecture.<br />
+            <span className="relative inline-block">
+              <span className="text-emerald-500">Right tool. Right job.</span>
+              <motion.span initial={{ scaleX:0 }} whileInView={{ scaleX:1 }} viewport={{ once:true }}
+                transition={{ duration:0.8, delay:0.7, ease:"easeOut" }}
+                className="absolute bottom-1 left-0 h-[4px] bg-emerald-400 rounded-full origin-left block" />
+            </span>
           </motion.h2>
           <motion.p initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             transition={{ duration:0.8, delay:0.1 }}
@@ -386,7 +463,7 @@ export default function TheWorkforce() {
             <motion.h2 initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
               transition={{ duration:0.8 }}
               className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-              Month-end close in 2 days.<br /><span className="text-amber-500">Not seven.</span>
+              Close faster.<br /><span className="text-amber-500">More time for analysis.</span>
             </motion.h2>
             <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
               transition={{ duration:0.8, delay:0.2 }}
@@ -502,7 +579,7 @@ export default function TheWorkforce() {
                   <div className="rounded-lg bg-red-500/5 border border-red-500/20 p-3">
                     <div className="text-red-400 text-xs font-bold mb-2">BEFORE</div>
                     <ul className="space-y-1">
-                      {["5-7 day close cycle","Manual recs: 40+ hours","Error rate: 3-8%","CFO waiting on T+7"].map(t => (
+                      {["5-7 day close cycle","Manual recs: 40+ hours","Error rate: 3-8%","Board pack delayed to T+7"].map(t => (
                         <li key={t} className="text-gray-500 text-xs flex gap-1.5"><span>-</span>{t}</li>
                       ))}
                     </ul>
@@ -510,7 +587,7 @@ export default function TheWorkforce() {
                   <div className="rounded-lg bg-emerald-500/5 border border-emerald-500/20 p-3">
                     <div className="text-emerald-400 text-xs font-bold mb-2">AFTER</div>
                     <ul className="space-y-1">
-                      {["1-2 day close cycle","Auto-recs: 15 min","Error rate: <0.5%","CFO pack at T+2"].map(t => (
+                      {["1-2 day close cycle","Auto-recs: 15 min","Error rate: <0.5%","Board pack ready at T+2"].map(t => (
                         <li key={t} className="text-gray-500 text-xs flex gap-1.5"><span className="text-emerald-500">✓</span>{t}</li>
                       ))}
                     </ul>

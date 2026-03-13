@@ -27,8 +27,8 @@ export default function Footer() {
               <span className="text-white text-sm font-bold">FS</span>
             </div>
             <div>
-              <div className="text-white font-bold text-lg">FS Analytics</div>
-              <div className="text-gray-400 text-xs">AI Briefing · March 2026</div>
+              <div className="text-white font-bold text-lg">AI Briefing</div>
+              <div className="text-gray-400 text-xs">March 2026</div>
             </div>
           </motion.div>
 

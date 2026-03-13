@@ -91,7 +91,12 @@ export default function BottomLine() {
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
             Deploying AI without observability<br />
-            <span className="text-violet-600">is an audit finding waiting to happen.</span>
+            <span className="relative inline-block">
+              <span className="text-violet-600">is an audit finding waiting to happen.</span>
+              <motion.span initial={{ scaleX:0 }} whileInView={{ scaleX:1 }} viewport={{ once:true }}
+                transition={{ duration:0.9, delay:0.7, ease:"easeOut" }}
+                className="absolute bottom-1 left-0 h-[4px] bg-violet-500 rounded-full origin-left block" />
+            </span>
           </motion.h2>
 
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
