@@ -1,0 +1,47 @@
+I need to perform a radical edit of our current webpage content and layout. Please apply the following changes across the entire context:
+
+1. Persona & Tone Shift
+
+Ownership: Change all instances of "your firm" and "you" to "our firm" and "us." This is a partnership; we are the designers. Use "we" when referring to the design and implementation process.
+
+Vibe: Sharp, high-end, and authoritative but collaborative. Remove all em dashes (—) from the copy.
+
+2. Header & Content Purge
+
+Fix: The website header is currently clashing with the hero section. Adjust the layout to ensure visual breathing room.
+
+Remove: Delete the entire "In 2017... This is how we got here" introductory paragraph.
+
+Cut: Remove all content located after the "Guardrail" section.
+
+3. Section Rebuilds
+
+A. The Timeline (Better Space Utilization)
+
+Layout: Move "Intelligence" to the left (in bold) and "Users" to the right.
+
+Markers: Specifically highlight 2017 and Nov.
+
+Goal: Optimize for horizontal space to reduce vertical scrolling.
+
+B. The Inflection Point (Sharpening)
+
+The Edit: Condense the "ChatGPT did not create..." paragraph. It is too verbose. Make it punchy.
+
+Tonal Correction: Change the "Architecture is strategy" section. It’s currently too negative. Rename it "Understanding Architecture" and focus on the "Right tool for the right job" philosophy.
+
+C. LangGraph & Automation (Interactive Focus)
+
+Visual Ask: Replace the verbose "LangGraph orchestrates..." text with a conceptual Play Button that triggers an animation of nodes and edges.
+
+The Narrative: Focus on "Month-end close." Show the number 7 days and animate it shrinking down to 2 days.
+
+Concept: Keep it short: Linear pipelines are limited; our graphs handle exceptions, loops, and human-in-the-loop decisions.
+
+D. Agent-to-Agent (A2A)
+
+The Edit: Make this short and sharp. Use only one high-impact scenario.
+
+4. Final Polish
+
+The goal is a world-class, award-winning interactive webpage. Prioritize scannability, motion-ready logic, and a premium "Less is More" aesthetic.
