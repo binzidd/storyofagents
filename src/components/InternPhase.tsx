@@ -36,10 +36,10 @@ WHERE period = 'Q3-2025'
       / budget_spend > 0.10
 ORDER BY variance_pct DESC;`,
     results: [
-      { id: "CC-204", name: "Technology Infrastructure",  actual: "£2.84M", ref: "£2.30M", delta: "+23.5%", bad: true },
-      { id: "CC-117", name: "Client Advisory Services",   actual: "£1.92M", ref: "£1.62M", delta: "+18.5%", bad: true },
-      { id: "CC-331", name: "Risk & Compliance",          actual: "£3.15M", ref: "£2.72M", delta: "+15.8%", bad: true },
-      { id: "CC-089", name: "Operations & Settlements",   actual: "£0.88M", ref: "£0.78M", delta: "+12.8%", bad: true },
+      { id: "CC-204", name: "Technology Infrastructure",  actual: "A$4.28M", ref: "A$3.47M", delta: "+23.5%", bad: true },
+      { id: "CC-117", name: "Client Advisory Services",   actual: "A$2.89M", ref: "A$2.44M", delta: "+18.5%", bad: true },
+      { id: "CC-331", name: "Risk & Compliance",          actual: "A$4.74M", ref: "A$4.09M", delta: "+15.8%", bad: true },
+      { id: "CC-089", name: "Operations & Settlements",   actual: "A$1.32M", ref: "A$1.17M", delta: "+12.8%", bad: true },
     ],
     note: "4 cost centres flagged · Generated in 0.4s",
   },
@@ -62,11 +62,11 @@ GROUP BY revenue_driver
 ORDER BY fy2025 DESC
 LIMIT 5;`,
     results: [
-      { id: "Advisory Fees",    name: "M&A Advisory",        actual: "£41.2M", ref: "£36.8M", delta: "+12.0%", bad: false },
-      { id: "Asset Management", name: "AUM-based Fees",       actual: "£38.7M", ref: "£31.2M", delta: "+24.0%", bad: false },
-      { id: "Fixed Income",     name: "Trading Desk Revenue", actual: "£22.4M", ref: "£24.1M", delta: "−7.1%",  bad: true  },
-      { id: "FX Services",      name: "Currency Solutions",   actual: "£18.9M", ref: "£15.5M", delta: "+21.9%", bad: false },
-      { id: "Structured Prods", name: "Bespoke Instruments",  actual: "£14.2M", ref: "£11.8M", delta: "+20.3%", bad: false },
+      { id: "Advisory Fees",    name: "M&A Advisory",        actual: "A$62.0M", ref: "A$55.4M", delta: "+12.0%", bad: false },
+      { id: "Asset Management", name: "AUM-based Fees",       actual: "A$58.3M", ref: "A$47.0M", delta: "+24.0%", bad: false },
+      { id: "Fixed Income",     name: "Trading Desk Revenue", actual: "A$33.7M", ref: "A$36.3M", delta: "−7.1%",  bad: true  },
+      { id: "FX Services",      name: "Currency Solutions",   actual: "A$28.5M", ref: "A$23.4M", delta: "+21.9%", bad: false },
+      { id: "Structured Prods", name: "Bespoke Instruments",  actual: "A$21.4M", ref: "A$17.8M", delta: "+20.3%", bad: false },
     ],
     note: "FY2025 vs FY2024 · 5 drivers ranked by revenue",
   },
@@ -183,16 +183,15 @@ export default function InternPhase() {
           <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight tracking-tight">
-            Talking wasn&apos;t enough.<br />
-            <span className="text-violet-600">We needed AI to</span>{" "}
-            <span className="shimmer-text">act.</span>
+            Insight without action<br />
+            <span className="text-violet-600">is just commentary.</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
-            Tool Calling gave AI the ability to reach into real systems — not just describe them.
+            Tool Calling was the capability that transformed AI from an advisor into an operator.
             Your Bloomberg terminal. Your GL database. Your compliance engine.
-            <strong className="text-gray-800"> All addressable from plain English.</strong>
+            <strong className="text-gray-800"> All accessible from a single natural language query.</strong>
           </motion.p>
         </div>
 

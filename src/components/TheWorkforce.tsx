@@ -271,13 +271,14 @@ export default function TheWorkforce() {
           <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-            From assistant<br />to <span className="text-emerald-400">workforce.</span>
+            Architecture is strategy.<br /><span className="text-emerald-500">Choose the wrong one</span> and pay for it.
           </motion.h2>
           <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Not all AI agents are built alike. The architecture you choose determines
-            whether your AI is a reliable processor or an autonomous problem-solver.
+            Flow Agents for processes that require auditability and compliance certainty.
+            Function Agents for problems that require reasoning and adaptability.
+            The institutions getting it right are deploying both — in the right places.
           </motion.p>
         </div>
 
@@ -362,14 +363,14 @@ export default function TheWorkforce() {
             <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.8 }}
               className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-              Workflows that<br /><span className="text-amber-400">think in graphs.</span>
+              Month-end close in 2 days.<br /><span className="text-amber-500">Not seven.</span>
             </motion.h2>
             <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-xl text-gray-600 max-w-3xl mx-auto">
-              LangGraph treats AI workflows as directed graphs — nodes are AI tasks, edges are conditions.
-              Unlike a linear pipeline, a graph can branch, loop, and invoke human checkpoints.
-              It&apos;s the difference between a conveyor belt and a decision tree.
+              LangGraph orchestrates AI workflows as directed graphs — nodes execute tasks, edges route decisions.
+              A linear pipeline can only go forward. A graph routes exceptions to human review, loops on data quality failures,
+              and converges parallel checks into a single decision. <strong className="text-gray-800">That is how finance actually works.</strong>
             </motion.p>
           </div>
 

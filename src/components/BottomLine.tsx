@@ -48,7 +48,7 @@ const OBS_TYPES = [
       "Rather than manually reviewing thousands of outputs, deploy a separate, highly-capable model (e.g. Claude Opus 4) as an automated evaluator. It scores each output against predefined finance-specific criteria: factual accuracy, source faithfulness, hallucination presence, regulatory tone, and confidence. Runs asynchronously — zero latency impact on users.",
     bullets: [
       "Hallucination detection on every client-facing output",
-      "Regulatory tone checks — FCA, SEC language compliance",
+      "Regulatory tone checks — ASIC, APRA language compliance",
       "Faithfulness scoring: does the answer match the source data?",
       "Structured verdicts with reasoning chains, not just scores",
     ],
@@ -78,7 +78,7 @@ const OBS_TYPES = [
       "Guardrails sit as a synchronous middleware layer. Input guardrails block harmful, off-topic, or regulatory-grey queries before they reach the model. Output guardrails scrub the response: strip PII, add required FCA/SEC disclaimers, cap financial projections to allowed ranges, and flag uncertainty. Key frameworks: Guardrails AI, NVIDIA NeMo Guardrails, LlamaGuard.",
     bullets: [
       "Input: block jailbreaks, off-topic queries, grey-area requests",
-      "Output: add mandatory disclosures, strip PII, bound projections",
+      "Output: add mandatory ASIC/APRA disclosures, strip PII, bound projections",
       "Real-time — applied in <25ms before output reaches user",
       "Fully auditable: every guardrail trigger is logged in Langfuse",
     ],
@@ -103,15 +103,15 @@ const DEMO_QUERIES = [
       { id: "intent",       label: "Intent Classification",  ms: 42,  status: "ok"   as const, color: "#8b5cf6", detail: "Query type: Comparative analysis · Sensitivity: Internal + Public · Auth: Analyst+" },
       { id: "guard-in",    label: "Input Guardrail",         ms: 18,  status: "ok"   as const, color: "#f59e0b", detail: "PII check: Clean · Query scope: Permitted · Jailbreak: None detected" },
       { id: "retrieval",   label: "RAG Retrieval",           ms: 210, status: "ok"   as const, color: "#3b82f6", detail: "Sources: GL Q3 report, Bloomberg peer comps, Analyst consensus · 4 chunks · Score ≥ 0.82" },
-      { id: "llm",         label: "LLM Generation",          ms: 380, status: "ok"   as const, color: "#10b981", detail: "Model: claude-sonnet-4-6 · Tokens: 1,240 in / 380 out · Temp: 0.2 · Cost: £0.004" },
+      { id: "llm",         label: "LLM Generation",          ms: 380, status: "ok"   as const, color: "#10b981", detail: "Model: claude-sonnet-4-6 · Tokens: 1,240 in / 380 out · Temp: 0.2 · Cost: A$0.006" },
       { id: "judge",       label: "LLM-as-Judge Eval",       ms: 145, status: "ok"   as const, color: "#3b82f6", detail: "Accuracy: 9.4/10 · Faithfulness: 9.1/10 · Hallucinations: 0 · Citations verified: 4" },
-      { id: "guard-out",   label: "Output Guardrail",        ms: 22,  status: "ok"   as const, color: "#f59e0b", detail: "FCA disclaimer added · PII: None · Projection bounds: Within ±5% tolerance" },
+      { id: "guard-out",   label: "Output Guardrail",        ms: 22,  status: "ok"   as const, color: "#f59e0b", detail: "ASIC disclaimer added · PII: None · Projection bounds: Within ±5% tolerance" },
     ] as TraceSpan[],
     evals: [
       { label: "Hallucination",  value: "None",   status: "pass" as const, detail: "All 4 factual claims traced to primary source documents" },
       { label: "Accuracy",       value: "9.4/10", status: "pass" as const, detail: "LLM judge verified output against ground truth Q3 dataset" },
       { label: "Faithfulness",   value: "9.1/10", status: "pass" as const, detail: "Output consistent with all retrieved context chunks" },
-      { label: "Disclaimer",     value: "Added",  status: "pass" as const, detail: "FCA-required investment disclaimer automatically appended" },
+      { label: "Disclaimer",     value: "Added",  status: "pass" as const, detail: "ASIC-required investment disclaimer automatically appended" },
       { label: "PII",            value: "None",   status: "pass" as const, detail: "No personal or client-identifiable data in input or output" },
       { label: "Confidence",     value: "High",   status: "pass" as const, detail: "Model certainty: 94% · Human escalation: Not required" },
     ] as EvalResult[],
@@ -309,16 +309,16 @@ export default function BottomLine() {
           <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-            You can&apos;t trust<br />
-            <span className="text-violet-600">what you can&apos;t see.</span>
+            Deploying AI without observability<br />
+            <span className="text-violet-600">is an audit finding waiting to happen.</span>
           </motion.h2>
 
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
-            In finance, a wrong AI answer isn&apos;t an inconvenience — it&apos;s a liability.
-            Observability is how you make every AI decision visible, measurable, and auditable.
-            <strong className="text-gray-800"> Langfuse is the platform that makes this real.</strong>
+            In financial services, a wrong AI output is not an inconvenience — it is a regulatory event.
+            Observability closes the gap between AI capability and institutional accountability.
+            <strong className="text-gray-800"> Every inference traced. Every decision auditable. Every output evaluated.</strong>
           </motion.p>
         </div>
 
@@ -575,15 +575,15 @@ export default function BottomLine() {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           transition={{ delay: 0.3 }}
           className="mt-16 light-card rounded-2xl p-8 text-center border-t-4 border-violet-500">
-          <div className="text-3xl mb-3">✨</div>
-          <h3 className="text-2xl font-black text-gray-900 mb-3">The future doesn&apos;t wait.</h3>
+          <div className="text-3xl mb-3">✦</div>
+          <h3 className="text-2xl font-black text-gray-900 mb-3">The institutions that will lead are already building this.</h3>
           <p className="text-gray-500 text-sm max-w-2xl mx-auto leading-relaxed">
-            The firms that will lead the next decade aren&apos;t the ones with the most data.
-            They&apos;re the ones that build AI systems they can
-            <strong className="text-gray-800"> trust</strong>,
-            <strong className="text-gray-800"> measure</strong>, and
-            <strong className="text-gray-800"> continuously improve</strong>.
-            Observability is the foundation. Every trace is a step toward that edge.
+            The competitive edge in financial services will not go to those with the most data.
+            It will go to those that build AI systems they can
+            <strong className="text-gray-800"> trust at the point of decision</strong>,
+            <strong className="text-gray-800"> defend under regulatory scrutiny</strong>, and
+            <strong className="text-gray-800"> improve with every production trace</strong>.
+            The architecture exists. The only variable is how quickly you move.
           </p>
           <div className="mt-6 flex items-center justify-center gap-3 text-xs text-gray-400">
             <span>FS Analytics · AI Briefing · March 2026</span>

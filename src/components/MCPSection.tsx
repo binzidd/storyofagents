@@ -51,14 +51,14 @@ export default function MCPSection() {
           <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-            The universal<br /><span className="text-cyan-600">connector</span> for AI.
+            15 point-to-point integrations<br /><span className="text-cyan-600">replaced by one standard.</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-500 max-w-3xl mx-auto">
-            As AI proliferated, every new integration required custom engineering.
-            MCP is the standard that changed everything —
-            <strong className="text-gray-800"> one secure protocol, all your enterprise data.</strong>
+            Every new AI agent used to require bespoke engineering for every data source.
+            Model Context Protocol ended that. One open standard — secure, permissioned, and auditable —
+            <strong className="text-gray-800"> connects every enterprise system to every AI agent.</strong>
           </motion.p>
         </div>
 

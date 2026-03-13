@@ -4,81 +4,72 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const STOPS = [
   {
-    id: "hero",
-    number: "01",
-    label: "The Spark",
-    sublabel: "Transformers & ChatGPT",
-    icon: "⚡",
-    color: "#3b82f6",
-    description: "How the 2017 Transformer paper and ChatGPT democratised intelligence.",
-  },
-  {
     id: "intern",
-    number: "02",
+    number: "01",
     label: "Tool Calling",
-    sublabel: "AI that Acts",
+    sublabel: "From Conversation to Action",
     icon: "🤖",
     color: "#8b5cf6",
-    description: "From chat to execution. SQL Weaver and the rise of AI that does.",
+    description: "AI moves beyond answering questions — it reaches into your GL, your Bloomberg terminal, your compliance engine. In plain English.",
   },
   {
     id: "workforce",
-    number: "03",
-    label: "Flow & Function Agents",
-    sublabel: "The Workforce",
+    number: "02",
+    label: "Agent Architecture",
+    sublabel: "Flow vs. Function Agents",
     icon: "🔄",
     color: "#10b981",
-    description: "Deterministic pipelines vs. autonomous problem-solvers. When to use which.",
+    description: "The architecture you choose determines whether AI is a reliable processor or an autonomous problem-solver. Both have a role.",
   },
   {
     id: "langgraph",
-    number: "04",
+    number: "03",
     label: "LangGraph",
-    sublabel: "Graph Workflows",
+    sublabel: "Orchestrated Workflows",
     icon: "🕸",
     color: "#f59e0b",
-    description: "Graph-based AI orchestration. Month-end close in 2 days, not 7.",
+    description: "Graph-based orchestration with conditional routing, parallel execution, and human-in-the-loop checkpoints. Month-end in 2 days, not 7.",
   },
   {
     id: "mcp",
-    number: "05",
-    label: "MCP Protocol",
-    sublabel: "Universal Connector",
+    number: "04",
+    label: "Model Context Protocol",
+    sublabel: "Universal Enterprise Connector",
     icon: "🔗",
     color: "#06b6d4",
-    description: "One standard interface to connect every enterprise data source to any AI.",
+    description: "One open standard replaces 15 point integrations. Secure, permissioned access to every data source — with full audit trail.",
   },
   {
     id: "a2a",
-    number: "06",
+    number: "05",
     label: "Agent-to-Agent",
     sublabel: "The Virtual Firm",
     icon: "🌐",
     color: "#8b5cf6",
-    description: "Specialised agents that challenge, negotiate, and reach consensus.",
+    description: "Specialised agents that challenge each other, negotiate constraints, and reach consensus. Your best committee. At machine speed.",
   },
   {
     id: "roi",
-    number: "07",
-    label: "Observability",
-    sublabel: "Langfuse & LLM Evals",
+    number: "06",
+    label: "LLM Observability",
+    sublabel: "Trust Through Visibility",
     icon: "🔭",
-    color: "#8b5cf6",
-    description: "Trace monitoring, LLM-as-judge, guardrails. You can't trust what you can't see.",
+    color: "#6366f1",
+    description: "Trace monitoring, LLM-as-judge evaluation, guardrails. In financial services, you cannot deploy what you cannot audit.",
   },
   {
     id: "future",
     number: "→",
-    label: "The Future Awaits",
-    sublabel: "What's Next",
+    label: "The Competitive Edge",
+    sublabel: "What Early Movers Are Building",
     icon: "✨",
     color: "#f59e0b",
-    description: "Agentic finance isn't coming. For early movers, it's already here.",
+    description: "Agentic finance is not a 2027 roadmap item. The firms pulling ahead are building the infrastructure for it today.",
   },
 ];
 
 export default function JourneyMap() {
-  const [activeId, setActiveId] = useState("hero");
+  const [activeId, setActiveId] = useState("intern");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -122,14 +113,14 @@ export default function JourneyMap() {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="mb-14 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-300 bg-white mb-5">
-            <span className="text-gray-500 text-xs font-semibold tracking-widest uppercase">Your Roadmap</span>
+            <span className="text-gray-500 text-xs font-semibold tracking-widest uppercase">Agenda</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3 leading-tight">
-            The Evolution Map
+            Six Capabilities.<br />One Strategic Briefing.
           </h2>
           <p className="text-gray-500 text-sm max-w-xl mx-auto">
-            Seven chapters. From a research paper to a virtual finance firm.
-            Click any stop to jump ahead — or just scroll.
+            From tool-augmented AI to autonomous agent networks — each chapter builds on the last.
+            Click any stop to navigate, or scroll at your own pace.
           </p>
         </motion.div>
 
@@ -311,7 +302,7 @@ export default function JourneyMap() {
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
                 style={{ background: `${s.color}15`, color: s.color, border: `1px solid ${s.color}30` }}>
                 <span>{s.icon}</span>
-                Currently reading: {s.label}
+                Now viewing: {s.label}
               </span>
             );
           })()}

@@ -18,28 +18,28 @@ const SCENARIOS: {
   {
     id: "fx",
     title: "FX Trade Decision",
-    description: "Evaluate a £50M EUR/GBP trade proposal",
-    trigger: "Quant recommends £50M EUR/GBP at 0.8734 spot",
+    description: "Evaluate an A$75M AUD/USD position proposal",
+    trigger: "Quant recommends A$75M AUD/USD short at 0.6318 spot",
     messages: [
-      { from:"Quant Agent",      to:"All",          text:"Recommending £50M EUR/GBP at 0.8734 spot. Momentum signal: +2.4σ. Expected holding period 3–5 days. Risk/reward: 1:3.2.",                                                            color:"#3b82f6", icon:"📊", delay:0,    type:"proposal"  },
-      { from:"Risk Agent",       to:"Quant Agent",  text:"Flagging: this position consumes 47% of remaining daily VaR budget. Current EUR exposure already £82M. Net position exceeds single-currency limit.",                               color:"#ef4444", icon:"🔴", delay:1400, type:"challenge" },
-      { from:"Quant Agent",      to:"Risk Agent",   text:"Acknowledged. Revised proposal: £30M. Reduces VaR impact to 28%. Signal remains valid at smaller size.",                                                                            color:"#3b82f6", icon:"📊", delay:2800, type:"proposal"  },
-      { from:"Compliance Agent", to:"All",          text:"Checking FCA position limits and client mandate... £30M EUR/GBP within bounds. No restricted counterparties. Approved with standard monitoring.",                                   color:"#f59e0b", icon:"⚖️", delay:4200, type:"approval"  },
-      { from:"Audit Agent",      to:"System",       text:"Decision logged: Trade #FX-2026-0847. Rationale, risk challenge, size revision, and compliance sign-off recorded. Regulatory audit trail: complete.",                               color:"#8b5cf6", icon:"📋", delay:5400, type:"log"       },
-      { from:"Execution Agent",  to:"All",          text:"Executing £30M EUR/GBP at 0.8736 (2bp slippage, within tolerance). Confirmation: EXEC-20260313-0091. P&L attribution logged.",                                                    color:"#10b981", icon:"⚡", delay:6600, type:"final"     },
+      { from:"Quant Agent",      to:"All",          text:"Recommending A$75M AUD/USD short at 0.6318 spot. RBA held rates — USD momentum: +2.1σ. Macro regime supports USD strength. Risk/reward: 1:2.9. Holding period: 3–5 days.",        color:"#3b82f6", icon:"📊", delay:0,    type:"proposal"  },
+      { from:"Risk Agent",       to:"Quant Agent",  text:"Flagging: this position consumes 52% of remaining daily VaR budget. Current AUD short book already A$120M notional. Aggregate exposure breaches single-currency concentration limit.",  color:"#ef4444", icon:"🔴", delay:1400, type:"challenge" },
+      { from:"Quant Agent",      to:"Risk Agent",   text:"Acknowledged. Revised proposal: A$45M notional. VaR consumption drops to 31%. Signal integrity maintained at reduced size. Recommending proceeding.",                               color:"#3b82f6", icon:"📊", delay:2800, type:"proposal"  },
+      { from:"Compliance Agent", to:"All",          text:"ASIC position limits reviewed. A$45M AUD/USD within approved mandate. No restricted counterparties. Client suitability confirmed. Approved with standard T+1 reporting.",            color:"#f59e0b", icon:"⚖️", delay:4200, type:"approval"  },
+      { from:"Audit Agent",      to:"System",       text:"Decision logged: Trade #FX-2026-1103. Full deliberation chain recorded — initial proposal, risk challenge, size revision, compliance sign-off. APRA audit trail: complete.",         color:"#8b5cf6", icon:"📋", delay:5400, type:"log"       },
+      { from:"Execution Agent",  to:"All",          text:"Executing A$45M AUD/USD short at 0.6316 (2bp slippage, within tolerance). Confirmation: EXEC-20260313-0147. P&L attribution and position limits updated in real time.",             color:"#10b981", icon:"⚡", delay:6600, type:"final"     },
     ],
   },
   {
     id: "monthend",
     title: "Month-End Escalation",
-    description: "£2.1M reconciliation break at T+1",
-    trigger: "Recon Agent flags £2.1M unmatched item in GL-7821",
+    description: "A$3.1M reconciliation break at T+1",
+    trigger: "Recon Agent flags A$3.1M unmatched item in GL-7821",
     messages: [
-      { from:"Recon Agent",    to:"All",        text:"BREAK DETECTED: £2.1M unmatched in Intercompany Settlements (GL-7821). Item aged >24h. Counterparty: FS Dublin. Auto-escalation threshold exceeded.",                         color:"#ef4444", icon:"⚠️", delay:0,    type:"challenge" },
-      { from:"Analysis Agent", to:"Recon Agent",text:"Cross-referencing GL-7821 against sub-ledger... Found: Dublin entity booked same item as intercompany receivable on 12-Mar. Timing mismatch — different period postings.",    color:"#3b82f6", icon:"📊", delay:1400, type:"proposal"  },
-      { from:"Compliance Agent",to:"All",       text:"Materiality review: £2.1M exceeds FRS 102 auto-post threshold. Senior accountant sign-off required before period close. Cannot auto-resolve.",                                color:"#f59e0b", icon:"⚖️", delay:2800, type:"challenge" },
-      { from:"Report Agent",   to:"Controller", text:"HUMAN REVIEW REQUIRED: Routed to Sarah Chen (Group Controller). Summary brief attached: root cause, correcting entry draft, FRS 102 implications. Awaiting approval.",       color:"#8b5cf6", icon:"📋", delay:4200, type:"log"       },
-      { from:"Report Agent",   to:"All",        text:"Controller approved at 09:47. Correcting journal posted. GL-7821 cleared. Month-end close unblocked. Board pack generation resuming. T+1 close achieved.",                   color:"#10b981", icon:"✅", delay:5400, type:"final"     },
+      { from:"Recon Agent",    to:"All",        text:"BREAK DETECTED: A$3.1M unmatched in Intercompany Settlements (GL-7821). Item aged >24h. Counterparty: FS Singapore entity. Auto-escalation threshold exceeded. Period close at risk.", color:"#ef4444", icon:"⚠️", delay:0,    type:"challenge" },
+      { from:"Analysis Agent", to:"Recon Agent",text:"Cross-referencing GL-7821 against sub-ledger... Root cause identified: Singapore entity posted same transaction as intercompany receivable on 12-Mar. Period cut-off timing mismatch.",  color:"#3b82f6", icon:"📊", delay:1400, type:"proposal"  },
+      { from:"Compliance Agent",to:"All",       text:"Materiality assessment: A$3.1M exceeds AASB 101 auto-post threshold for this entity. Senior accountant approval required prior to period close. Cannot auto-resolve.",                  color:"#f59e0b", icon:"⚖️", delay:2800, type:"challenge" },
+      { from:"Report Agent",   to:"Controller", text:"HUMAN REVIEW REQUIRED: Escalated to Sarah Chen (Group Controller). Brief attached: root cause, draft correcting journal, AASB 101 materiality assessment. Awaiting sign-off.",          color:"#8b5cf6", icon:"📋", delay:4200, type:"log"       },
+      { from:"Report Agent",   to:"All",        text:"Controller approved at 09:52. Correcting journal posted. GL-7821 cleared. Month-end close unblocked. Board pack generation resumed. T+1 close achieved.",                              color:"#10b981", icon:"✅", delay:5400, type:"final"     },
     ],
   },
 ];
@@ -105,14 +105,15 @@ export default function A2ASection() {
           <motion.h2 initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             transition={{ duration:0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-            The virtual<br /><span className="text-violet-600">firm.</span>
+            Your best risk committee.<br /><span className="text-violet-600">Available 24/7.</span>
           </motion.h2>
           <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
             transition={{ delay:0.2 }}
             className="text-xl text-gray-500 max-w-3xl mx-auto">
-            Specialised agents don&apos;t just use tools — they
-            <strong className="text-gray-800"> challenge each other</strong>, negotiate constraints,
-            and reach consensus. The way your best committees do. At machine speed.
+            Specialised agents don&apos;t just execute — they
+            <strong className="text-gray-800"> challenge each other&apos;s assumptions</strong>, stress-test constraints,
+            and reach defensible consensus. Decisions that would take your committee hours happen in seconds —
+            with a complete audit trail.
           </motion.p>
         </div>
 
