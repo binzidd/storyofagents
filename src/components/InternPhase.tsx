@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 interface SQLResult {
   id: string;
@@ -105,15 +105,6 @@ ORDER BY ABS(z_score) DESC;`,
   },
 ];
 
-const TOOLS = [
-  { icon: "📊", label: "Bloomberg Terminal", color: "#f59e0b", angle: -60 },
-  { icon: "🗄️", label: "SQL Database",       color: "#3b82f6", angle: -20 },
-  { icon: "📧", label: "Email & Comms",       color: "#8b5cf6", angle:  20 },
-  { icon: "📈", label: "Portfolio Systems",   color: "#10b981", angle:  60 },
-  { icon: "⚖️", label: "Compliance Engine",   color: "#ef4444", angle: 100 },
-  { icon: "📋", label: "Report Generator",    color: "#06b6d4", angle: 140 },
-];
-
 function TypewriterSQL({ sql, active }: { sql: string; active: boolean }) {
   const [displayed, setDisplayed] = useState("");
   const [done, setDone] = useState(false);
@@ -145,14 +136,191 @@ function TypewriterSQL({ sql, active }: { sql: string; active: boolean }) {
   );
 }
 
+const DEMO_TASKS = [
+  { task: "Q4 budget review",      owner: "Sarah M.", due: "2 days ago" },
+  { task: "Client onboarding docs", owner: "James K.", due: "5 days ago" },
+  { task: "Risk assessment",        owner: "Priya L.", due: "1 day ago"  },
+];
+
+function ToolCallDemo() {
+  const [phase, setPhase]     = useState(0);
+  const [playing, setPlaying] = useState(false);
+
+  const play = () => {
+    if (playing) return;
+    setPlaying(true);
+    setPhase(0);
+    [400, 1300, 2400, 3600, 4900].forEach((d, i) =>
+      setTimeout(() => setPhase(i + 1), d)
+    );
+    setTimeout(() => setPlaying(false), 5500);
+  };
+
+  const reset = () => { setPhase(0); setPlaying(false); };
+
+  return (
+    <div className="light-card rounded-2xl overflow-hidden">
+      {/* Header bar */}
+      <div className="px-5 py-3.5 bg-gray-900 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-red-500" />
+            <div className="w-3 h-3 rounded-full bg-yellow-500" />
+            <div className="w-3 h-3 rounded-full bg-green-500" />
+          </div>
+          <span className="text-gray-400 text-xs font-mono ml-2">Tool Call · Step by Step</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className={`w-1.5 h-1.5 rounded-full ${playing ? "bg-amber-400 animate-pulse" : phase >= 5 ? "bg-emerald-400" : "bg-gray-500"}`} />
+          <span className={`text-xs font-mono ${playing ? "text-amber-400" : phase >= 5 ? "text-emerald-400" : "text-gray-500"}`}>
+            {playing ? "running" : phase >= 5 ? "complete" : "ready"}
+          </span>
+        </div>
+      </div>
+
+      <div className="p-5 space-y-3 min-h-[380px]">
+        {/* Empty state */}
+        {phase === 0 && !playing && (
+          <div className="flex items-center justify-center h-52 text-gray-400 text-sm">
+            Click <span className="mx-1 font-semibold text-violet-600">Run Demo</span> to see tool calling in action
+          </div>
+        )}
+
+        <AnimatePresence>
+          {/* Step 1 — user question */}
+          {phase >= 1 && (
+            <motion.div key="q" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              className="flex items-start gap-3">
+              <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-sm flex-shrink-0">👤</div>
+              <div className="flex-1 bg-blue-50 border border-blue-200 rounded-xl rounded-tl-sm px-3.5 py-2.5">
+                <div className="text-xs text-blue-500 font-semibold mb-0.5">User</div>
+                <div className="text-sm text-gray-800">Show me overdue tasks for the team</div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 2 — agent thinking */}
+          {phase >= 2 && (
+            <motion.div key="think" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              className="flex items-start gap-3">
+              <div className="w-7 h-7 rounded-full bg-violet-100 flex items-center justify-center text-sm flex-shrink-0">🤖</div>
+              <div className="flex-1 bg-violet-50 border border-violet-200 rounded-xl rounded-tl-sm px-3.5 py-2.5">
+                <div className="text-xs text-violet-500 font-semibold mb-0.5">Agent · Planning</div>
+                <div className="text-xs text-gray-600 font-mono">
+                  I need to call <span className="text-violet-700 font-bold">get_tasks()</span> with a status filter to find overdue items...
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 3 — tool call code snippet */}
+          {phase >= 3 && (
+            <motion.div key="tool" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              className="rounded-xl overflow-hidden border border-amber-200">
+              <div className="bg-gray-900 px-3 py-2 flex items-center justify-between">
+                <span className="text-amber-400 text-xs font-mono font-bold">🔧 Tool Call</span>
+                <span className="text-gray-500 text-xs font-mono">task_manager API</span>
+              </div>
+              <div className="bg-[#1e1e2e] p-3.5 font-mono text-xs leading-relaxed">
+                <div className="text-gray-500"># AI constructs the right parameters</div>
+                <div className="mt-1.5">
+                  <span className="text-amber-400">get_tasks</span>
+                  <span className="text-white">(</span>
+                </div>
+                <div className="ml-4">
+                  <span className="text-blue-300">status</span>
+                  <span className="text-white"> = </span>
+                  <span className="text-green-400">&quot;overdue&quot;</span>
+                  <span className="text-white">,</span>
+                </div>
+                <div className="ml-4">
+                  <span className="text-blue-300">assignee</span>
+                  <span className="text-white"> = </span>
+                  <span className="text-green-400">&quot;all&quot;</span>
+                  <span className="text-white">,</span>
+                </div>
+                <div className="ml-4">
+                  <span className="text-blue-300">sort_by</span>
+                  <span className="text-white"> = </span>
+                  <span className="text-green-400">&quot;due_date&quot;</span>
+                </div>
+                <div className="text-white">)</div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 4 — tool result */}
+          {phase >= 4 && (
+            <motion.div key="result" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              className="rounded-xl border border-emerald-200 overflow-hidden">
+              <div className="bg-emerald-50 px-3 py-2 flex items-center gap-2 border-b border-emerald-100">
+                <span className="text-emerald-600 text-xs font-mono font-bold">✓ Tool Response</span>
+                <span className="text-emerald-500 text-xs">3 records returned</span>
+              </div>
+              <div className="bg-white px-3 py-2 space-y-1.5">
+                {DEMO_TASKS.map((t, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.12 }}
+                    className="flex items-center justify-between text-xs py-1.5 border-b border-gray-50 last:border-0">
+                    <span className="text-gray-700 font-medium">{t.task}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-gray-400">{t.owner}</span>
+                      <span className="text-red-500 font-semibold">{t.due}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 5 — final answer */}
+          {phase >= 5 && (
+            <motion.div key="answer" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              className="flex items-start gap-3">
+              <div className="w-7 h-7 rounded-full bg-violet-100 flex items-center justify-center text-sm flex-shrink-0">🤖</div>
+              <div className="flex-1 bg-gray-50 border border-gray-200 rounded-xl rounded-tl-sm px-3.5 py-2.5">
+                <div className="text-xs text-violet-500 font-semibold mb-0.5">Agent · Answer</div>
+                <div className="text-sm text-gray-800 leading-relaxed">
+                  You have <strong>3 overdue tasks</strong>. Priya&apos;s risk assessment (1 day late) and
+                  Sarah&apos;s budget review (2 days late) are most urgent. James&apos; onboarding docs
+                  are 5 days overdue.
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Footer */}
+      <div className="px-5 py-3.5 border-t border-gray-100 flex items-center justify-between">
+        <div className="text-xs text-gray-400">1 tool call · natural language in, structured data out</div>
+        <div className="flex items-center gap-2">
+          {phase > 0 && !playing && (
+            <button onClick={reset} className="text-xs text-gray-400 hover:text-gray-600 transition-colors">Reset</button>
+          )}
+          <motion.button onClick={playing ? undefined : play}
+            whileHover={!playing ? { scale: 1.02 } : {}}
+            whileTap={!playing ? { scale: 0.97 } : {}}
+            className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              playing       ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+              : phase >= 5  ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                            : "bg-violet-600 text-white hover:bg-violet-700"
+            }`}>
+            {playing ? "Running..." : phase >= 5 ? "▶ Run Again" : "▶ Run Demo"}
+          </motion.button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function InternPhase() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: false, margin: "-20%" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const opacity = useTransform(scrollYProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0]);
 
-  const [activeQ, setActiveQ]   = useState(0);
-  const [stage, setStage]       = useState<"idle"|"sql"|"results">("idle");
+  const [activeQ, setActiveQ] = useState(0);
+  const [stage, setStage]     = useState<"idle"|"sql"|"results">("idle");
 
   const runQuery = (idx: number) => {
     setActiveQ(idx);
@@ -195,76 +363,31 @@ export default function InternPhase() {
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
             Tool Calling was the capability that transformed AI from an advisor into an operator.
-            Your Bloomberg terminal. Your GL database. Your compliance engine.
+            Our Bloomberg terminal. Our GL database. Our compliance engine.
             <strong className="text-gray-800"> All accessible from a single natural language query.</strong>
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left — tool orbit */}
-          <div>
-            <div className="relative w-[340px] h-[340px] flex items-center justify-center mx-auto">
-              <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
-                transition={{ duration: 1 }}
-                className="relative z-10 w-24 h-24 rounded-2xl bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center shadow-xl animate-pulse-glow">
-                <div className="text-center">
-                  <div className="text-3xl">🤖</div>
-                  <div className="text-white text-xs font-bold mt-1">AI Core</div>
+
+          {/* Left — animated tool call demo */}
+          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+            <ToolCallDemo />
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              {[
+                { n:"1", t:"Understand intent",   c:"#8b5cf6" },
+                { n:"2", t:"Select & call tools", c:"#3b82f6" },
+                { n:"3", t:"Synthesise answer",   c:"#10b981" },
+              ].map(s => (
+                <div key={s.n} className="rounded-lg p-2.5 text-center" style={{ background:`${s.c}10`, border:`1px solid ${s.c}25` }}>
+                  <div className="text-xs font-black mb-1" style={{ color: s.c }}>Step {s.n}</div>
+                  <div className="text-xs text-gray-600">{s.t}</div>
                 </div>
-                {[1,2,3].map(i => (
-                  <motion.div key={i} className="absolute inset-0 rounded-2xl border border-violet-400/40"
-                    animate={{ scale: [1, 2.5], opacity: [0.4, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.8 }}
-                  />
-                ))}
-              </motion.div>
-
-              {TOOLS.map((tool, i) => {
-                const rad = (tool.angle * Math.PI) / 180;
-                const r   = 130;
-                const x   = Math.cos(rad) * r;
-                const y   = Math.sin(rad) * r;
-                return (
-                  <motion.div key={tool.label}
-                    initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
-                    animate={isInView ? { opacity: 1, scale: 1, x, y } : { opacity: 0, scale: 0, x: 0, y: 0 }}
-                    transition={{ duration: 0.7, delay: i * 0.12 }}
-                    className="absolute">
-                    <div className="-translate-x-1/2 -translate-y-1/2 w-20 bg-white rounded-xl p-2.5 text-center shadow-md border"
-                      style={{ borderColor: `${tool.color}25` }}>
-                      <div className="text-xl mb-1">{tool.icon}</div>
-                      <div className="text-gray-800 text-xs font-semibold leading-tight">{tool.label}</div>
-                      <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                        className="absolute -top-1 -right-1 w-2 h-2 rounded-full" style={{ background: tool.color }} />
-                    </div>
-                  </motion.div>
-                );
-              })}
+              ))}
             </div>
+          </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="mt-8 light-card rounded-2xl p-5 border-l-4 border-violet-500">
-              <div className="font-semibold text-gray-900 mb-2">How Tool Calling works</div>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                When a user asks a question, the AI identifies which tools to call, constructs the right parameters, executes them, and synthesises the outputs. The human sees only the answer.
-              </p>
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                {[
-                  { n:"1", t:"Understand intent",   c:"#8b5cf6" },
-                  { n:"2", t:"Select & call tools", c:"#3b82f6" },
-                  { n:"3", t:"Synthesise answer",   c:"#10b981" },
-                ].map(s => (
-                  <div key={s.n} className="rounded-lg p-2 text-center" style={{ background:`${s.c}10`, border:`1px solid ${s.c}25` }}>
-                    <div className="text-xs font-black mb-1" style={{ color: s.c }}>Step {s.n}</div>
-                    <div className="text-xs text-gray-600">{s.t}</div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right — SQL Weaver demo */}
+          {/* Right — Natural Language to SQL demo */}
           <div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="light-card rounded-2xl overflow-hidden">
@@ -276,7 +399,7 @@ export default function InternPhase() {
                     <div className="w-3 h-3 rounded-full bg-yellow-500" />
                     <div className="w-3 h-3 rounded-full bg-green-500" />
                   </div>
-                  <span className="text-gray-400 text-xs font-mono ml-2">SQL Weaver · FS Analytics</span>
+                  <span className="text-gray-400 text-xs font-mono ml-2">Natural Language to SQL</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -366,8 +489,8 @@ export default function InternPhase() {
 
             <div className="mt-3 flex items-center justify-end gap-2">
               <span className="text-xs text-gray-400">Powered by</span>
-              <span className="text-xs font-bold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-md border border-violet-200">SQL Weaver</span>
-              <span className="text-xs text-gray-400">· Natural language → enterprise SQL</span>
+              <span className="text-xs font-bold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-md border border-violet-200">Natural Language to SQL</span>
+              <span className="text-xs text-gray-400">· plain English, enterprise results</span>
             </div>
           </div>
         </div>

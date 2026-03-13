@@ -5,32 +5,31 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 interface Msg {
   from: string; to: string; text: string;
   color: string; icon: string; delay: number;
-  type: "proposal" | "challenge" | "approval" | "log" | "final";
+  type: "request" | "challenge" | "approval" | "log" | "complete";
 }
 
 const MESSAGES: Msg[] = [
-  { from:"Controller Agent", to:"All",               text:"Month-end T+0: Automated reconciliation complete across 847 GL accounts. Preliminary P&L: Revenue A$892M, EBITDA A$241M at 27.0% margin. Three items above variance threshold require review before final journals are posted.",                                               color:"#3b82f6", icon:"🔢", delay:0,    type:"proposal"  },
-  { from:"Audit Agent",      to:"Controller Agent",  text:"Challenging: GL-4421 shows A$8.2M credit to Other Income with no supporting schedule. GL-7803 depreciation charge is 34% above prior month without a recorded asset addition. Substantiation required before I can sign off.",                                                   color:"#ef4444", icon:"🔍", delay:1600, type:"challenge" },
-  { from:"Controller Agent", to:"Audit Agent",       text:"Substantiated: GL-4421 is a government grant received 13 March — documentation uploaded to audit folder. GL-7803 reflects accelerated depreciation on IT infrastructure per board-approved policy effective Q1 2026. Both items resolved.",                                       color:"#3b82f6", icon:"🔢", delay:3200, type:"proposal"  },
-  { from:"CFO Agent",        to:"All",               text:"Revenue A$892M is A$14M below guidance midpoint. EBITDA margin 27.0% vs guidance 28.5%. Variance narrative required: contract renewal delays impacted Q3 top line. Numbers signed off. Reporting Agent to finalise board commentary.",                                           color:"#f59e0b", icon:"🎯", delay:4600, type:"approval"  },
-  { from:"Audit Agent",      to:"System",            text:"Sign-off recorded: all 847 accounts reconciled, 3 flagged items resolved with documentation, zero unexplained variances. Board pack cleared for release. AASB 101 and APRA audit trail: complete.",                                                                             color:"#ef4444", icon:"🔍", delay:5800, type:"log"       },
-  { from:"Reporting Agent",  to:"All",               text:"Board pack compiled: P&L, balance sheet, cash flow, EBITDA bridge, and revenue variance narrative with CFO commentary. Release: T+2 at 02:14 AEST. Distribution to 11 board members queued. ASIC lodgement checklist: clear.",                                                  color:"#8b5cf6", icon:"📋", delay:7000, type:"final"     },
+  { from:"Sales Agent",      to:"Compliance Agent",  text:"New client application: Meridian Capital, A$2.4M mandate. Documents uploaded: ID, source of funds declaration, and signed risk disclosure. Requesting KYC sign-off to proceed.",                                                               color:"#3b82f6", icon:"💼", delay:0,    type:"request"   },
+  { from:"Compliance Agent", to:"Sales Agent",        text:"KYC incomplete. Source of funds declaration references an overseas trust structure — supplementary beneficial ownership form required. Application on hold until received.",                                                                 color:"#ef4444", icon:"⚖️", delay:1600, type:"challenge" },
+  { from:"Sales Agent",      to:"Compliance Agent",   text:"Beneficial ownership form received and uploaded. Meridian Capital is 100% owned by two Australian residents — full details provided. Ready for re-review.",                                                                                color:"#3b82f6", icon:"💼", delay:3200, type:"request"   },
+  { from:"Compliance Agent", to:"Risk Agent",         text:"KYC cleared: identity verified, source of funds confirmed, no PEP or sanctions matches. Passing to Risk for suitability assessment before final approval.",                                                                               color:"#ef4444", icon:"⚖️", delay:4800, type:"approval"  },
+  { from:"Risk Agent",       to:"All",                text:"Suitability confirmed: mandate scope aligns with client risk profile. Recommended product set: diversified fixed income and equities. No concentration or mandate breach risk detected. Approved to onboard.",                           color:"#f59e0b", icon:"🛡️", delay:6400, type:"approval"  },
+  { from:"Audit Agent",      to:"System",             text:"Onboarding trail complete: KYC signed off, suitability assessed, all documents logged. Meridian Capital account opened. ASIC and AUSTRAC records updated. Full audit trail: 6 documents, 3 agents, zero manual steps.",                 color:"#8b5cf6", icon:"📋", delay:7800, type:"complete"  },
 ];
 
 const AGENTS = [
-  { id:"controller", label:"Controller Agent", icon:"🔢", color:"#3b82f6", role:"Leads the close and posts journals"    },
-  { id:"audit",      label:"Audit Agent",      icon:"🔍", color:"#ef4444", role:"Challenges every material entry"       },
-  { id:"cfo",        label:"CFO Agent",        icon:"🎯", color:"#f59e0b", role:"Reviews against guidance and board"    },
-  { id:"treasury",   label:"Treasury Agent",   icon:"💰", color:"#10b981", role:"Validates cash and covenants"          },
-  { id:"reporting",  label:"Reporting Agent",  icon:"📋", color:"#8b5cf6", role:"Packages the CFO-ready board output"  },
+  { id:"sales",      label:"Sales Agent",      icon:"💼", color:"#3b82f6", role:"Submits application and documents"    },
+  { id:"compliance", label:"Compliance Agent", icon:"⚖️", color:"#ef4444", role:"Verifies KYC and AML requirements"    },
+  { id:"risk",       label:"Risk Agent",       icon:"🛡️", color:"#f59e0b", role:"Assesses client suitability"          },
+  { id:"audit",      label:"Audit Agent",      icon:"📋", color:"#8b5cf6", role:"Logs the full onboarding trail"       },
 ];
 
 const TYPE_COLORS: Record<string, { bg: string; border: string }> = {
-  proposal:  { bg:"#3b82f610", border:"#3b82f630" },
+  request:   { bg:"#3b82f610", border:"#3b82f630" },
   challenge: { bg:"#ef444410", border:"#ef444430" },
   approval:  { bg:"#f59e0b10", border:"#f59e0b30" },
   log:       { bg:"#ef444408", border:"#ef444420" },
-  final:     { bg:"#8b5cf610", border:"#8b5cf640" },
+  complete:  { bg:"#8b5cf610", border:"#8b5cf640" },
 };
 
 export default function A2ASection() {
@@ -72,14 +71,13 @@ export default function A2ASection() {
           <motion.h2 initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             transition={{ duration:0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
-            Five specialists. Zero meetings.<br /><span className="text-emerald-500">Board pack at T+2.</span>
+            Four specialists. Zero emails.<br /><span className="text-emerald-500">Client onboarded in minutes.</span>
           </motion.h2>
           <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
             transition={{ delay:0.2 }}
             className="text-xl text-gray-500 max-w-3xl mx-auto">
-            Specialist agents with defined roles review and challenge each other&apos;s work in real time.
-            Disputes are resolved in minutes. Every number is substantiated before it reaches the board.
-            Collaborative, auditable, and complete by T+2.
+            Each agent owns a defined role. They challenge each other, escalate blockers, and hand off cleanly.
+            No chasing emails. No missed steps. Every decision logged.
           </motion.p>
         </div>
 
@@ -90,7 +88,7 @@ export default function A2ASection() {
 
             {/* Agent roster */}
             <div className="light-card rounded-2xl p-5">
-              <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">The Council</div>
+              <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">The Team</div>
               <div className="space-y-2">
                 {AGENTS.map(agent => {
                   const isActive = visible.some(idx =>
@@ -123,8 +121,8 @@ export default function A2ASection() {
             {/* Scenario trigger */}
             <div className="light-card rounded-2xl p-5">
               <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Scenario</div>
-              <div className="text-sm font-semibold text-gray-900 mb-1">Month-End Close Council</div>
-              <div className="text-xs text-gray-500 mb-4">T+0: 847 GL accounts locked. Controllers, auditors, and CFO convene.</div>
+              <div className="text-sm font-semibold text-gray-900 mb-1">New Client Onboarding</div>
+              <div className="text-xs text-gray-500 mb-4">A$2.4M mandate. Compliance, risk, and audit agents review in parallel.</div>
               <motion.button onClick={running ? undefined : run}
                 whileHover={!running?{scale:1.02}:{}} whileTap={!running?{scale:0.97}:{}}
                 className={`w-full py-3 rounded-xl font-semibold text-sm transition-all ${
@@ -132,7 +130,7 @@ export default function A2ASection() {
                   done    ? "bg-emerald-600 text-white hover:bg-emerald-700" :
                             "bg-violet-600 text-white hover:bg-violet-700 shadow-md"
                 }`}>
-                {running ? "Council in session..." : done ? "▶ Run Again" : "▶ Convene Council"}
+                {running ? "Processing application..." : done ? "▶ Run Again" : "▶ Submit Application"}
               </motion.button>
               {done && (
                 <button onClick={reset} className="w-full mt-2 py-2 text-xs text-gray-400 hover:text-gray-600 transition-colors">
@@ -146,8 +144,9 @@ export default function A2ASection() {
               <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">How it works</div>
               <div className="space-y-2.5">
                 {[
-                  { label: "Orchestration", desc: "Automates the sequential workflow", icon: "🕸", color: "#f59e0b" },
-                  { label: "Agent Council", desc: "Specialists audit each other in parallel", icon: "🌐", color: "#8b5cf6" },
+                  { label: "Defined roles", desc: "Each agent owns one domain, no overlap", icon: "🎯", color: "#3b82f6" },
+                  { label: "Challenge loops", desc: "Agents block and escalate when criteria fail", icon: "⚡", color: "#ef4444" },
+                  { label: "Automatic handoff", desc: "Approval flows to the next agent instantly", icon: "🔗", color: "#8b5cf6" },
                 ].map(item => (
                   <div key={item.label} className="flex items-start gap-2.5">
                     <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm flex-shrink-0 mt-0.5"
@@ -169,8 +168,8 @@ export default function A2ASection() {
             <div className="light-card rounded-2xl overflow-hidden">
               <div className="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-gray-900 text-sm">Agent Council · Month-End Close</div>
-                  <div className="text-xs text-gray-500 mt-0.5">T+0 trigger — sub-ledgers locked, council in session</div>
+                  <div className="font-semibold text-gray-900 text-sm">Onboarding Council · Meridian Capital</div>
+                  <div className="text-xs text-gray-500 mt-0.5">A$2.4M mandate · KYC, suitability, and audit in sequence</div>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className={`w-2 h-2 rounded-full ${running?"bg-amber-500 animate-pulse":done?"bg-emerald-500":"bg-gray-300"}`} />
@@ -181,7 +180,7 @@ export default function A2ASection() {
               <div className="p-5 min-h-[480px] space-y-3">
                 {visible.length === 0 && !running && (
                   <div className="flex items-center justify-center h-64 text-gray-400 text-sm">
-                    Click <span className="mx-1 font-semibold text-violet-600">Convene Council</span> to watch the agents sign off on month-end
+                    Click <span className="mx-1 font-semibold text-violet-600">Submit Application</span> to watch the agents onboard a new client
                   </div>
                 )}
                 <AnimatePresence>
@@ -224,15 +223,15 @@ export default function A2ASection() {
                         animate={{ opacity:[0.3,1,0.3], scale:[0.8,1.2,0.8] }}
                         transition={{ duration:1.2, repeat:Infinity, delay:i*0.2 }} />
                     ))}
-                    <span className="text-xs text-gray-400">Council deliberating...</span>
+                    <span className="text-xs text-gray-400">Agents reviewing...</span>
                   </div>
                 )}
 
                 {done && (
                   <motion.div initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }}
                     className="rounded-xl p-3 bg-emerald-50 border border-emerald-200 flex items-center gap-2">
-                    <span className="text-emerald-600 text-sm font-semibold">Month-end complete</span>
-                    <span className="text-gray-500 text-xs">· 847 accounts signed off · board pack released · T+2 achieved</span>
+                    <span className="text-emerald-600 text-sm font-semibold">Onboarding complete</span>
+                    <span className="text-gray-500 text-xs">· KYC cleared · suitability approved · audit trail logged · zero manual steps</span>
                   </motion.div>
                 )}
               </div>

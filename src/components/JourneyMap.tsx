@@ -116,10 +116,10 @@ export default function JourneyMap() {
             <span className="text-gray-500 text-xs font-semibold tracking-widest uppercase">Agenda</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3 leading-tight">
-            Six Capabilities.<br />One Strategic Briefing.
+            From Chat.<br />To Autonomous Agents.
           </h2>
           <p className="text-gray-500 text-sm max-w-xl mx-auto mb-8">
-            From tool-augmented AI to autonomous agent networks, each chapter builds on the last.
+            A journey through six capabilities, each one unlocking the next.
             Click any stop to navigate, or scroll to explore.
           </p>
 

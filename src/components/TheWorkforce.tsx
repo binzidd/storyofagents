@@ -3,142 +3,212 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 
 function FlowAgentViz({ isVisible }: { isVisible: boolean }) {
-  const [activeStep, setActiveStep] = useState(-1);
+  const [phase, setPhase] = useState(0); // 0=idle, 1=receive, 2=check, 3=decision, 4=branch, 5=done
 
   useEffect(() => {
-    if (!isVisible) { setActiveStep(-1); return; }
-    setActiveStep(0);
-    [0,1,2,3,4].forEach((_, i) => {
-      setTimeout(() => setActiveStep(i + 1), (i + 1) * 700);
-    });
+    if (!isVisible) { setPhase(0); return; }
+    const delays = [200, 900, 1700, 2600, 3500];
+    delays.forEach((d, i) => setTimeout(() => setPhase(i + 1), d));
   }, [isVisible]);
 
-  const steps = [
-    { label: "Sub-ledgers close",        note: "T+0 trigger",  icon: "📥", color: "#3b82f6" },
-    { label: "Run 847 GL checks",        note: "8 min",         icon: "⚙️", color: "#3b82f6" },
-    { label: "Flag 3 exceptions",        note: "Needs review",  icon: "⚠️", color: "#f59e0b" },
-    { label: "Post approved journals",   note: "Auto-posted",   icon: "📒", color: "#3b82f6" },
-    { label: "Draft report generated",   note: "Ready at T+1",  icon: "📊", color: "#10b981" },
-  ];
+  const lit = (n: number) => phase >= n;
 
   return (
     <div>
-      <div className="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Example: monthly reconciliation</div>
+      <div className="text-xs text-gray-400 mb-4 font-medium uppercase tracking-wide">Example: invoice approval pipeline</div>
+
       <div className="space-y-1.5">
-        {steps.map((step, i) => {
-          const isDone    = activeStep > i;
-          const isCurrent = activeStep === i;
-          const clr       = isDone || isCurrent ? step.color : "#9CA3AF";
-          return (
-            <div key={step.label}>
-              <motion.div
-                animate={{
-                  background: isDone ? `${step.color}10` : isCurrent ? `${step.color}06` : "transparent",
-                  borderColor: isDone ? `${step.color}40` : isCurrent ? `${step.color}25` : "#E5E7EB",
-                }}
-                transition={{ duration: 0.3 }}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl border">
-                <motion.div
-                  animate={{ background: isDone || isCurrent ? `${step.color}20` : "#F3F4F6" }}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0"
-                  style={{ border: `1px solid ${clr}30` }}>
-                  <AnimatePresence mode="wait">
-                    <motion.span key={isDone ? "done" : "icon"}
-                      initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.6, opacity: 0 }}
-                      transition={{ duration: 0.2 }}>
-                      {isDone ? "✓" : step.icon}
-                    </motion.span>
-                  </AnimatePresence>
-                </motion.div>
-                <span className={`text-xs font-medium flex-1 ${isDone || isCurrent ? "text-gray-800" : "text-gray-400"}`}>
-                  {step.label}
-                </span>
-                <div className="flex items-center gap-1.5 flex-shrink-0">
-                  {isCurrent && (
-                    <motion.div className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                      style={{ background: step.color }}
-                      animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 0.9, repeat: Infinity }} />
-                  )}
-                  <span className="text-xs font-mono" style={{ color: isDone ? step.color : "#C4C4C4" }}>
-                    {step.note}
-                  </span>
-                </div>
-              </motion.div>
-              {i < steps.length - 1 && (
-                <motion.div className="ml-7 w-px h-2"
-                  animate={{ background: activeStep > i ? `${step.color}40` : "#E5E7EB" }}
-                  transition={{ duration: 0.3 }} />
-              )}
-            </div>
-          );
-        })}
+        {/* Step 1 */}
+        <motion.div animate={{ background: lit(1) ? "#3b82f610" : "transparent", borderColor: lit(1) ? "#3b82f640" : "#E5E7EB" }}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl border">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-base flex-shrink-0"
+            style={{ background: lit(1) ? "#3b82f620" : "#F3F4F6", border: `1px solid ${lit(1) ? "#3b82f640" : "#E5E7EB"}` }}>
+            {lit(2) ? "✓" : "📥"}
+          </div>
+          <span className={`text-xs font-medium flex-1 ${lit(1) ? "text-gray-800" : "text-gray-400"}`}>Invoice received</span>
+          {lit(1) && <span className="text-xs font-mono text-blue-500">trigger</span>}
+        </motion.div>
+
+        <motion.div className="ml-7 w-px h-2" animate={{ background: lit(1) ? "#3b82f640" : "#E5E7EB" }} />
+
+        {/* Step 2 */}
+        <motion.div animate={{ background: lit(2) ? "#3b82f610" : "transparent", borderColor: lit(2) ? "#3b82f640" : "#E5E7EB" }}
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl border">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-base flex-shrink-0"
+            style={{ background: lit(2) ? "#3b82f620" : "#F3F4F6", border: `1px solid ${lit(2) ? "#3b82f640" : "#E5E7EB"}` }}>
+            {lit(3) ? "✓" : "⚙️"}
+          </div>
+          <span className={`text-xs font-medium flex-1 ${lit(2) ? "text-gray-800" : "text-gray-400"}`}>
+            Run policy checks
+          </span>
+          <div className="flex items-center gap-1.5">
+            {phase === 2 && <motion.div className="w-1.5 h-1.5 rounded-full bg-blue-500" animate={{ opacity:[0.3,1,0.3] }} transition={{ duration:0.9, repeat:Infinity }} />}
+            {lit(2) && <span className="text-xs font-mono text-blue-500">auto</span>}
+          </div>
+        </motion.div>
+
+        <motion.div className="ml-7 w-px h-2" animate={{ background: lit(2) ? "#3b82f640" : "#E5E7EB" }} />
+
+        {/* Decision diamond */}
+        <AnimatePresence>
+          {lit(3) && (
+            <motion.div initial={{ opacity:0, scale:0.9 }} animate={{ opacity:1, scale:1 }}
+              className="flex flex-col items-center gap-1 py-1">
+              <div className="px-4 py-2 rounded-xl border-2 border-amber-400 bg-amber-50 text-center">
+                <div className="text-xs font-black text-amber-600">◆ DECISION</div>
+                <div className="text-xs text-gray-700 mt-0.5">Amount over A$10,000?</div>
+              </div>
+              <div className="flex gap-8 text-xs font-medium mt-1">
+                <span className="text-red-500">Yes → manager approval</span>
+                <span className="text-emerald-600">No → auto-approve</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Branch outcomes */}
+        <AnimatePresence>
+          {lit(4) && (
+            <motion.div initial={{ opacity:0, y:4 }} animate={{ opacity:1, y:0 }}
+              className="grid grid-cols-2 gap-2">
+              <div className="rounded-xl px-3 py-2.5 border border-red-200 bg-red-50">
+                <div className="text-xs font-bold text-red-500 mb-1">Route A</div>
+                <div className="text-xs text-gray-600">Notifies manager</div>
+                <div className="text-xs text-gray-500">Awaits approval</div>
+              </div>
+              <div className="rounded-xl px-3 py-2.5 border border-emerald-200 bg-emerald-50">
+                <div className="text-xs font-bold text-emerald-600 mb-1">Route B</div>
+                <div className="text-xs text-gray-600">Auto-approved</div>
+                <div className="text-xs text-gray-500">Payment scheduled</div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {lit(5) && (
+            <motion.div initial={{ opacity:0, y:4 }} animate={{ opacity:1, y:0 }}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-200">
+              <span className="text-emerald-500">✓</span>
+              <span className="text-xs font-medium text-emerald-700">Invoice processed · audit trail complete</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-gray-100">
+        <p className="text-xs text-gray-500 leading-relaxed">
+          Every step is <strong className="text-gray-700">pre-defined and auditable</strong>. The same input always produces the same output. No surprises.
+        </p>
       </div>
     </div>
   );
 }
 
 function FunctionAgentViz({ isVisible }: { isVisible: boolean }) {
-  const branches = [
-    { label: "Query GL data",       found: "A$14M gap identified",      x: 10, y: 42, color: "#3b82f6" },
-    { label: "Check sales pipeline",found: "3 renewals delayed in Q3",  x: 82, y: 38, color: "#8b5cf6" },
-    { label: "Review contracts",    found: "Seasonal renewal pattern",  x: 22, y: 80, color: "#f59e0b" },
-    { label: "Compare to forecast", found: "Sector softness confirmed", x: 74, y: 78, color: "#10b981" },
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (!isVisible) { setPhase(0); return; }
+    [300, 1000, 1800, 2800].forEach((d, i) => setTimeout(() => setPhase(i + 1), d));
+  }, [isVisible]);
+
+  const tasks = [
+    { label: "Task Agent", task: "Check GL data",      found: "A$9M cost overrun", color: "#3b82f6" },
+    { label: "Task Agent", task: "Review headcount",   found: "12 hires above plan", color: "#f59e0b" },
+    { label: "Task Agent", task: "Analyse vendor spend",found: "3 contracts up 18%",  color: "#8b5cf6" },
   ];
+
   return (
     <div>
-      <div className="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Example: Why did revenue miss this quarter?</div>
-      <div className="relative h-64">
-        <svg className="absolute inset-0 w-full h-full pointer-events-none">
-          {branches.map((branch, i) => (
-            <motion.line key={i}
-              x1="50%" y1="18%"
-              x2={`${branch.x + 8}%`} y2={`${branch.y}%`}
-              stroke={branch.color} strokeWidth="1.5" strokeOpacity="0.4"
-              strokeDasharray="4 3"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={isVisible ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.2 + 0.3 }}
-            />
-          ))}
-        </svg>
+      <div className="text-xs text-gray-400 mb-4 font-medium uppercase tracking-wide">Example: why did costs spike this quarter?</div>
 
-        {/* Central goal node */}
+      {/* Principal Agent */}
+      <motion.div initial={{ opacity:0, y:-8 }} animate={isVisible?{opacity:1,y:0}:{opacity:0,y:-8}}
+        transition={{ duration:0.4 }}
+        className="mb-3">
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.4 }}
-          className="absolute left-1/2 -translate-x-1/2"
-          style={{ top: "4%" }}>
-          <motion.div
-            animate={isVisible ? { boxShadow: ["0 0 0px #8b5cf620","0 0 20px #8b5cf640","0 0 0px #8b5cf620"] } : {}}
-            transition={{ duration: 2.5, repeat: Infinity }}
-            className="px-4 py-2 rounded-2xl text-center border-2"
-            style={{ background: "#8b5cf615", borderColor: "#8b5cf660", minWidth: 160 }}>
-            <div className="text-xs font-bold text-violet-600">Goal</div>
-            <div className="text-xs font-semibold text-gray-800 mt-0.5 leading-tight">Revenue miss: A$14M</div>
-          </motion.div>
+          animate={isVisible && phase>=1 ? { boxShadow:["0 0 0px #8b5cf620","0 0 16px #8b5cf440","0 0 0px #8b5cf620"] } : {}}
+          transition={{ duration:2, repeat:Infinity }}
+          className="rounded-2xl px-4 py-3 border-2 text-center mx-auto max-w-[220px]"
+          style={{ background:"#8b5cf610", borderColor: phase>=1 ? "#8b5cf660" : "#E5E7EB" }}>
+          <div className="text-xs font-black text-violet-600 mb-0.5">🧠 Principal Agent</div>
+          <div className="text-xs text-gray-700 font-medium">&ldquo;Why did costs spike?&rdquo;</div>
+          {phase >= 1 && (
+            <motion.div initial={{opacity:0}} animate={{opacity:1}}
+              className="text-xs text-violet-500 mt-1">
+              {phase < 3 ? "Delegating to task agents..." : phase < 4 ? "Collecting findings..." : "Synthesising answer ✓"}
+            </motion.div>
+          )}
         </motion.div>
+      </motion.div>
 
-        {/* Branch nodes */}
-        {branches.map((branch, i) => (
-          <motion.div key={branch.label}
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.7 }}
-            transition={{ duration: 0.4, delay: i * 0.2 + 0.5 }}
-            className="absolute -translate-x-1/2 -translate-y-1/2"
-            style={{ left: `${branch.x + 8}%`, top: `${branch.y}%` }}>
-            <div className="rounded-xl px-2.5 py-2 text-center border"
-              style={{ background: `${branch.color}12`, borderColor: `${branch.color}40`, minWidth: 100 }}>
-              <div className="text-xs font-semibold leading-tight" style={{ color: branch.color }}>{branch.label}</div>
-              <motion.div
-                initial={{ opacity: 0, height: 0 }} animate={isVisible ? { opacity: 1, height: "auto" } : {}}
-                transition={{ delay: i * 0.2 + 1.2, duration: 0.3 }}
-                className="overflow-hidden">
-                <div className="text-xs text-gray-500 mt-1 leading-tight">{branch.found}</div>
-              </motion.div>
-            </div>
+      {/* Delegation arrows */}
+      <AnimatePresence>
+        {phase >= 1 && (
+          <motion.div initial={{opacity:0}} animate={{opacity:1}} className="flex justify-around px-4 mb-1">
+            {tasks.map((_, i) => (
+              <motion.div key={i} initial={{height:0}} animate={{height:20}}
+                transition={{delay: i*0.15, duration:0.3}}
+                className="w-px" style={{background: tasks[i].color + "60"}} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Task Agents */}
+      <div className="grid grid-cols-3 gap-2 mb-2">
+        {tasks.map((task, i) => (
+          <motion.div key={task.task}
+            initial={{ opacity:0, y:10 }}
+            animate={phase>=1 ? {opacity:1,y:0} : {opacity:0,y:10}}
+            transition={{ delay: i * 0.15, duration:0.35 }}
+            className="rounded-xl p-2.5 border text-center"
+            style={{ background:`${task.color}10`, borderColor:`${task.color}30` }}>
+            <div className="text-xs font-bold mb-1" style={{color:task.color}}>Task Agent</div>
+            <div className="text-xs text-gray-600 leading-tight">{task.task}</div>
+            <AnimatePresence>
+              {phase >= 3 && (
+                <motion.div initial={{opacity:0,height:0}} animate={{opacity:1,height:"auto"}}
+                  transition={{delay: i*0.1, duration:0.3}}
+                  className="mt-1.5 pt-1.5 border-t text-xs font-medium leading-tight overflow-hidden"
+                  style={{color:task.color, borderColor:`${task.color}30`}}>
+                  {task.found}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         ))}
+      </div>
+
+      {/* Return arrows */}
+      <AnimatePresence>
+        {phase >= 3 && (
+          <motion.div initial={{opacity:0}} animate={{opacity:1}} className="flex justify-around px-4 mb-1">
+            {tasks.map((_, i) => (
+              <motion.div key={i} initial={{height:0}} animate={{height:20}}
+                transition={{delay: i*0.15, duration:0.3}}
+                className="w-px" style={{background: tasks[i].color + "60"}} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Synthesis */}
+      <AnimatePresence>
+        {phase >= 4 && (
+          <motion.div initial={{opacity:0,y:6}} animate={{opacity:1,y:0}}
+            className="rounded-xl px-3 py-2.5 border border-violet-200 bg-violet-50 text-center">
+            <div className="text-xs font-semibold text-violet-700">Synthesis complete</div>
+            <div className="text-xs text-gray-600 mt-0.5">Costs up A$9M: headcount, GL overruns, vendor contracts</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="mt-4 pt-4 border-t border-gray-100">
+        <p className="text-xs text-gray-500 leading-relaxed">
+          The principal agent <strong className="text-gray-700">plans and delegates</strong>. Task agents work in parallel. No fixed steps — it adapts to the problem.
+        </p>
       </div>
     </div>
   );
@@ -425,9 +495,8 @@ export default function TheWorkforce() {
               <div className="ml-auto px-3 py-1 rounded-full bg-violet-500/20 text-violet-400 text-xs font-medium">Adaptive</div>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed mb-6">
-              Give them a goal, not a script.
-              <span className="text-gray-900"> &ldquo;Identify the top 5 reasons our EBITDA margin compressed this quarter&rdquo;</span> and
-              they determine which data sources to query, what analyses to run, and how to synthesise the narrative.
+              Give them a goal. They figure out the steps.
+              <span className="text-gray-900"> Tell them what to achieve, not how to achieve it.</span> A principal agent plans the work, delegates to specialist task agents running in parallel, and synthesises the answer.
             </p>
             <FunctionAgentViz isVisible={isInView} />
             <div className="mt-6 pt-6 border-t border-gray-200">
