@@ -3,25 +3,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const sections = [
-  { id: "hero",      label: "The Spark",     color: "#3b82f6" },
+  { id: "hero",      label: "Intro",         color: "#3b82f6" },
   { id: "journey",   label: "Overview",      color: "#64748b" },
   { id: "intern",    label: "Tool Calling",  color: "#8b5cf6" },
   { id: "workforce", label: "Agents",        color: "#10b981" },
   { id: "langgraph", label: "LangGraph",     color: "#f59e0b" },
   { id: "mcp",       label: "MCP",           color: "#06b6d4" },
   { id: "a2a",       label: "A2A",           color: "#8b5cf6" },
-  { id: "roi",       label: "Observability",  color: "#8b5cf6" },
+  { id: "roi",       label: "Observability", color: "#6366f1" },
 ];
 
 export default function Navigation() {
-  const [scrolled, setScrolled]       = useState(false);
-  const [active, setActive]           = useState("hero");
-  const [hovered, setHovered]         = useState<string | null>(null);
-  const isHero = active === "hero";
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive]     = useState("hero");
+  const [hovered, setHovered]   = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 60);
+      setScrolled(window.scrollY > 80);
       const ids = sections.map(s => s.id);
       for (let i = ids.length - 1; i >= 0; i--) {
         const el = document.getElementById(ids[i]);
@@ -35,7 +34,7 @@ export default function Navigation() {
   const go = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  const activeIdx = sections.findIndex(s => s.id === active);
+  const activeIdx   = sections.findIndex(s => s.id === active);
   const activeColor = sections[activeIdx]?.color ?? "#3b82f6";
 
   return (
@@ -46,25 +45,19 @@ export default function Navigation() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled && !isHero
+          scrolled
             ? "bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm"
-            : isHero && scrolled
-            ? "bg-[#050814]/90 backdrop-blur-xl border-b border-white/5"
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
               <span className="text-white text-xs font-black">FS</span>
             </div>
             <div>
-              <div className={`font-bold text-sm leading-none ${isHero && !scrolled ? "text-white" : "text-gray-900"}`}>
-                FS Analytics
-              </div>
-              <div className={`text-xs leading-none mt-0.5 ${isHero && !scrolled ? "text-blue-300" : "text-blue-600"}`}>
-                AI Briefing · March 2026
-              </div>
+              <div className="font-bold text-sm leading-none text-gray-900">FS Analytics</div>
+              <div className="text-xs leading-none mt-0.5 text-blue-600">AI Briefing · March 2026</div>
             </div>
           </div>
 
@@ -73,8 +66,7 @@ export default function Navigation() {
               <button key={s.id} onClick={() => go(s.id)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   active === s.id
-                    ? isHero ? "bg-blue-500/20 text-blue-300" : "bg-blue-50 text-blue-600"
-                    : isHero && !scrolled ? "text-gray-400 hover:text-white hover:bg-white/5"
+                    ? "bg-blue-50 text-blue-600"
                     : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
                 }`}>
                 {s.label}
@@ -83,9 +75,7 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className={`hidden md:block text-xs font-medium ${isHero && !scrolled ? "text-gray-500" : "text-gray-400"}`}>
-              By Binay
-            </span>
+            <span className="hidden md:block text-xs font-medium text-gray-400">By Binay</span>
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           </div>
         </div>
@@ -103,7 +93,7 @@ export default function Navigation() {
           }}
         />
         {sections.map((s, i) => {
-          const isPast  = i <= activeIdx;
+          const isPast   = i <= activeIdx;
           const isActive = s.id === active;
           return (
             <div key={s.id} className="relative z-10">
@@ -122,7 +112,7 @@ export default function Navigation() {
                 {isActive && (
                   <motion.div className="absolute rounded-full pointer-events-none"
                     style={{ background: `${s.color}30` }}
-                    animate={{ width: 24, height: 24, opacity: [0.5,0,0.5] }}
+                    animate={{ width: 24, height: 24, opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
                 )}

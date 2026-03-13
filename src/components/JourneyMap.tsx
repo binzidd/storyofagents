@@ -10,7 +10,7 @@ const STOPS = [
     sublabel: "From Conversation to Action",
     icon: "🤖",
     color: "#8b5cf6",
-    description: "AI moves beyond answering questions — it reaches into your GL, your Bloomberg terminal, your compliance engine. In plain English.",
+    description: "AI moves beyond answering questions. It reaches into our GL, our Bloomberg terminal, our compliance engine. In plain English.",
   },
   {
     id: "workforce",
@@ -19,7 +19,7 @@ const STOPS = [
     sublabel: "Flow vs. Function Agents",
     icon: "🔄",
     color: "#10b981",
-    description: "The architecture you choose determines whether AI is a reliable processor or an autonomous problem-solver. Both have a role.",
+    description: "The architecture we choose determines whether AI is a reliable processor or an autonomous problem-solver. Both have a role.",
   },
   {
     id: "langgraph",
@@ -37,7 +37,7 @@ const STOPS = [
     sublabel: "Universal Enterprise Connector",
     icon: "🔗",
     color: "#06b6d4",
-    description: "One open standard replaces 15 point integrations. Secure, permissioned access to every data source — with full audit trail.",
+    description: "One open standard replaces 15 point integrations. Secure, permissioned access to every data source, with a full audit trail.",
   },
   {
     id: "a2a",
@@ -46,7 +46,7 @@ const STOPS = [
     sublabel: "The Virtual Firm",
     icon: "🌐",
     color: "#8b5cf6",
-    description: "Specialised agents that challenge each other, negotiate constraints, and reach consensus. Your best committee. At machine speed.",
+    description: "Specialised agents that challenge each other, negotiate constraints, and reach consensus. Our best committee. At machine speed.",
   },
   {
     id: "roi",
@@ -55,7 +55,7 @@ const STOPS = [
     sublabel: "Trust Through Visibility",
     icon: "🔭",
     color: "#6366f1",
-    description: "Trace monitoring, LLM-as-judge evaluation, guardrails. In financial services, you cannot deploy what you cannot audit.",
+    description: "Trace monitoring, LLM-as-judge evaluation, guardrails. In financial services, we cannot deploy what we cannot audit.",
   },
   {
     id: "future",
@@ -119,8 +119,8 @@ export default function JourneyMap() {
             Six Capabilities.<br />One Strategic Briefing.
           </h2>
           <p className="text-gray-500 text-sm max-w-xl mx-auto">
-            From tool-augmented AI to autonomous agent networks — each chapter builds on the last.
-            Click any stop to navigate, or scroll at your own pace.
+            From tool-augmented AI to autonomous agent networks, each chapter builds on the last.
+            Click any stop to navigate, or scroll to explore.
           </p>
         </motion.div>
 

@@ -14,7 +14,7 @@ const STEPS = [
   { id: "problem",   title: "The Problem",       mode: "chaos" as const, desc: "Every new AI agent needs custom integrations. 5 sources × 3 agents = 15 bespoke connectors. Each with its own auth, error handling, and rate limits. A maintenance nightmare." },
   { id: "standard",  title: "One Standard",      mode: "mcp"   as const, desc: "MCP defines a single interface. Build one MCP server per data source. Every AI agent speaks the same language. No custom code per pairing." },
   { id: "security",  title: "Secure by Design",  mode: "mcp"   as const, desc: "AI agents never touch raw credentials or direct DB connections. Every read is permissioned, logged, and auditable. MCP is the secure proxy layer." },
-  { id: "scale",     title: "Scale Effortlessly", mode: "mcp"  as const, desc: "New source? One MCP server — all agents get it instantly. New agent? Connects to all existing MCP servers immediately. Compounding network effect." },
+  { id: "scale",     title: "Scale Effortlessly", mode: "mcp"  as const, desc: "New source? One MCP server. All agents get it instantly. New agent? Connects to all existing MCP servers immediately. Compounding network effect." },
 ];
 
 export default function MCPSection() {
@@ -57,7 +57,7 @@ export default function MCPSection() {
             transition={{ delay: 0.2 }}
             className="text-xl text-gray-500 max-w-3xl mx-auto">
             Every new AI agent used to require bespoke engineering for every data source.
-            Model Context Protocol ended that. One open standard — secure, permissioned, and auditable —
+            Model Context Protocol ended that. One open standard, secure, permissioned, and auditable,
             <strong className="text-gray-800"> connects every enterprise system to every AI agent.</strong>
           </motion.p>
         </div>
@@ -83,7 +83,7 @@ export default function MCPSection() {
               <div className={`w-2 h-2 rounded-full animate-pulse ${viewMode === "chaos" ? "bg-red-500" : "bg-cyan-500"}`} />
               <span className="text-sm font-semibold text-gray-700">
                 {viewMode === "chaos"
-                  ? "15 custom connectors — click a source to see its adapter"
+                  ? "15 custom connectors: click a source to see its adapter"
                   : "Click any data source to see how MCP connects it"}
               </span>
             </div>
@@ -261,7 +261,7 @@ export default function MCPSection() {
             {[
               { before:"15 custom connectors",       after:"5 MCP servers (one per source)", icon:"⚡" },
               { before:"Raw DB credentials in AI",   after:"Permissioned, auditable reads",  icon:"🔒" },
-              { before:"Months to add a new source", after:"Days — one MCP server",          icon:"📅" },
+              { before:"Months to add a new source", after:"Days, via one MCP server",        icon:"📅" },
             ].map((item, i) => (
               <motion.div key={i} initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }}
                 viewport={{ once:true }} transition={{ delay: i*0.1 }}

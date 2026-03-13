@@ -38,7 +38,7 @@ export default function Footer() {
             viewport={{ once: true }}
             className="text-gray-400 text-sm max-w-xl leading-relaxed mb-4"
           >
-            From the 2017 Transformer paper to the emergence of autonomous agent networks —
+            From the 2017 Transformer paper to the emergence of autonomous agent networks,
             the evolution of AI represents the most significant operational transformation
             in financial services since the introduction of electronic trading.
           </motion.p>
