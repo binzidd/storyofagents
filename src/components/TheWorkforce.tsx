@@ -1,15 +1,15 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
-function FlowAgentViz({ isVisible }: { isVisible: boolean }) {
+function FlowAgentViz({ playing, done }: { playing: boolean; done: boolean }) {
   const [phase, setPhase] = useState(0); // 0=idle, 1=receive, 2=check, 3=decision, 4=branch, 5=done
 
   useEffect(() => {
-    if (!isVisible) { setPhase(0); return; }
+    if (!playing) { if (!done) setPhase(0); return; }
     const delays = [200, 900, 1700, 2600, 3500];
     delays.forEach((d, i) => setTimeout(() => setPhase(i + 1), d));
-  }, [isVisible]);
+  }, [playing, done]);
 
   const lit = (n: number) => phase >= n;
 
@@ -105,13 +105,13 @@ function FlowAgentViz({ isVisible }: { isVisible: boolean }) {
   );
 }
 
-function FunctionAgentViz({ isVisible }: { isVisible: boolean }) {
+function FunctionAgentViz({ playing, done }: { playing: boolean; done: boolean }) {
   const [phase, setPhase] = useState(0);
 
   useEffect(() => {
-    if (!isVisible) { setPhase(0); return; }
+    if (!playing) { if (!done) setPhase(0); return; }
     [300, 1000, 1800, 2800].forEach((d, i) => setTimeout(() => setPhase(i + 1), d));
-  }, [isVisible]);
+  }, [playing, done]);
 
   const tasks = [
     { label: "Task Agent", task: "Check GL data",      found: "A$9M cost overrun", color: "#3b82f6" },
@@ -124,11 +124,11 @@ function FunctionAgentViz({ isVisible }: { isVisible: boolean }) {
       <div className="text-xs text-gray-400 mb-4 font-medium uppercase tracking-wide">Example: why did costs spike this quarter?</div>
 
       {/* Principal Agent */}
-      <motion.div initial={{ opacity:0, y:-8 }} animate={isVisible?{opacity:1,y:0}:{opacity:0,y:-8}}
+      <motion.div initial={{ opacity:0, y:-8 }} animate={playing || done?{opacity:1,y:0}:{opacity:0,y:-8}}
         transition={{ duration:0.4 }}
         className="mb-3">
         <motion.div
-          animate={isVisible && phase>=1 ? { boxShadow:["0 0 0px #8b5cf620","0 0 16px #8b5cf440","0 0 0px #8b5cf620"] } : {}}
+          animate={(playing || done) && phase>=1 ? { boxShadow:["0 0 0px #8b5cf620","0 0 16px #8b5cf440","0 0 0px #8b5cf620"] } : {}}
           transition={{ duration:2, repeat:Infinity }}
           className="rounded-2xl px-4 py-3 border-2 text-center mx-auto max-w-[220px]"
           style={{ background:"#8b5cf610", borderColor: phase>=1 ? "#8b5cf660" : "#E5E7EB" }}>
@@ -406,12 +406,39 @@ function DaysCounter({ playing }: { playing: boolean }) {
 
 export default function TheWorkforce() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: false, margin: "-15%" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
 
+  const [flowPlaying, setFlowPlaying]   = useState(false);
+  const [flowDone, setFlowDone]         = useState(false);
+  const [funcPlaying, setFuncPlaying]   = useState(false);
+  const [funcDone, setFuncDone]         = useState(false);
   const [graphPlaying, setGraphPlaying] = useState(false);
   const [graphDone, setGraphDone]       = useState(false);
+
+  const playFlow = () => {
+    if (flowPlaying) return;
+    setFlowPlaying(true);
+    setFlowDone(false);
+    setTimeout(() => { setFlowPlaying(false); setFlowDone(true); }, 3500);
+  };
+
+  const resetFlow = () => {
+    setFlowPlaying(false);
+    setFlowDone(false);
+  };
+
+  const playFunc = () => {
+    if (funcPlaying) return;
+    setFuncPlaying(true);
+    setFuncDone(false);
+    setTimeout(() => { setFuncPlaying(false); setFuncDone(true); }, 2800);
+  };
+
+  const resetFunc = () => {
+    setFuncPlaying(false);
+    setFuncDone(false);
+  };
 
   const playGraph = () => {
     if (graphPlaying) return;
@@ -472,7 +499,23 @@ export default function TheWorkforce() {
               <span className="text-gray-900"> Step A always precedes Step B.</span>
               Regulators love them. Auditors can trace every decision.
             </p>
-            <FlowAgentViz isVisible={isInView} />
+            <div className="mb-4 flex items-center justify-between">
+              <div className="text-xs text-gray-500 font-medium uppercase">Watch the flow</div>
+              <div className="flex items-center gap-2">
+                {flowDone && <button onClick={resetFlow} className="text-xs text-gray-400 hover:text-gray-600">Reset</button>}
+                <motion.button onClick={playFlow}
+                  whileHover={!flowPlaying ? { scale: 1.02 } : {}}
+                  whileTap={!flowPlaying ? { scale: 0.97 } : {}}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                    flowPlaying       ? "bg-blue-100 text-blue-400 cursor-not-allowed"
+                    : flowDone        ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                                      : "bg-blue-600 text-white hover:bg-blue-700"
+                  }`}>
+                  {flowPlaying ? "Running..." : flowDone ? "▶ Again" : "▶ Play"}
+                </motion.button>
+              </div>
+            </div>
+            <FlowAgentViz playing={flowPlaying} done={flowDone} />
             <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="text-xs text-gray-500 font-medium mb-3 uppercase tracking-widest">Best For</div>
               <div className="flex flex-wrap gap-2">
@@ -498,7 +541,23 @@ export default function TheWorkforce() {
               Give them a goal. They figure out the steps.
               <span className="text-gray-900"> Tell them what to achieve, not how to achieve it.</span> A principal agent plans the work, delegates to specialist task agents running in parallel, and synthesises the answer.
             </p>
-            <FunctionAgentViz isVisible={isInView} />
+            <div className="mb-4 flex items-center justify-between">
+              <div className="text-xs text-gray-500 font-medium uppercase">Watch the delegation</div>
+              <div className="flex items-center gap-2">
+                {funcDone && <button onClick={resetFunc} className="text-xs text-gray-400 hover:text-gray-600">Reset</button>}
+                <motion.button onClick={playFunc}
+                  whileHover={!funcPlaying ? { scale: 1.02 } : {}}
+                  whileTap={!funcPlaying ? { scale: 0.97 } : {}}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                    funcPlaying       ? "bg-violet-100 text-violet-400 cursor-not-allowed"
+                    : funcDone        ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                                      : "bg-violet-600 text-white hover:bg-violet-700"
+                  }`}>
+                  {funcPlaying ? "Running..." : funcDone ? "▶ Again" : "▶ Play"}
+                </motion.button>
+              </div>
+            </div>
+            <FunctionAgentViz playing={funcPlaying} done={funcDone} />
             <div className="mt-6 pt-6 border-t border-gray-200">
               <div className="text-xs text-gray-500 font-medium mb-3 uppercase tracking-widest">Best For</div>
               <div className="flex flex-wrap gap-2">
