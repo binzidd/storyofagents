@@ -164,6 +164,24 @@ export default function Hero() {
           </div>
         </motion.div>
 
+        {/* Multi-Agent & Human Partnership card */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 1.3 }}
+          className="rounded-2xl border border-violet-100 bg-violet-50 p-6 max-w-2xl mx-auto mt-4">
+          <div className="flex items-start gap-4 text-left">
+            <div className="w-10 h-10 rounded-xl bg-violet-100 border border-violet-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-violet-600 text-lg">🤝</span>
+            </div>
+            <div>
+              <div className="text-gray-900 font-semibold mb-1.5">2026: Multi-Agent Reality</div>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                By 2026, the competitive advantage is not a single AI. It is a team of specialists—each owning one domain, challenging each other, making decisions faster and better than any human or algorithm alone.
+                <strong className="text-gray-900"> AI is not here to take your job. It is here to make you the best version of yourself.</strong>
+                An analyst with five colleagues who never sleep and never miss a detail.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Scroll indicator */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1.5 }}
           className="mt-12 flex flex-col items-center gap-2">
