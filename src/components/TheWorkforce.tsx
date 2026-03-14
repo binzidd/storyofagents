@@ -413,6 +413,7 @@ export default function TheWorkforce() {
   const [flowDone, setFlowDone]         = useState(false);
   const [funcPlaying, setFuncPlaying]   = useState(false);
   const [funcDone, setFuncDone]         = useState(false);
+  const [toolJobAnimated, setToolJobAnimated] = useState(false);
   const [graphPlaying, setGraphPlaying] = useState(false);
   const [graphDone, setGraphDone]       = useState(false);
 
@@ -465,10 +466,10 @@ export default function TheWorkforce() {
             transition={{ duration:0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
             Understanding Architecture.<br />
-            <span className="relative inline-block">
+            <span className="relative inline-block cursor-pointer" onClick={() => setToolJobAnimated(!toolJobAnimated)}>
               <span className="text-emerald-500">Right tool. Right job.</span>
-              <motion.span initial={{ scaleX:0 }} whileInView={{ scaleX:1 }} viewport={{ once:true }}
-                transition={{ duration:0.8, delay:0.7, ease:"easeOut" }}
+              <motion.span initial={{ scaleX:0 }} animate={toolJobAnimated ? { scaleX:1 } : { scaleX:0 }}
+                transition={{ duration:0.8, ease:"easeOut" }}
                 className="absolute bottom-1 left-0 h-[4px] bg-emerald-400 rounded-full origin-left block" />
             </span>
           </motion.h2>
