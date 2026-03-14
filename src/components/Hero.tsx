@@ -78,9 +78,9 @@ export default function Hero() {
     return unsub;
   }, [smoothProgress]);
 
-  const y       = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const opacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
-  const scale   = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
 
   return (
     <section id="hero" ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#F9F8F5]">
@@ -174,9 +174,8 @@ export default function Hero() {
             <div>
               <div className="text-gray-900 font-semibold mb-1.5">2026: Multi-Agent Reality</div>
               <p className="text-gray-600 text-sm leading-relaxed">
-                By 2026, the competitive advantage is not a single AI. It is a team of specialists—each owning one domain, challenging each other, making decisions faster and better than any human or algorithm alone.
-                <strong className="text-gray-900"> AI is not here to take your job. It is here to make you the best version of yourself.</strong>
-              </p>
+                By 2026, the competitive advantage is not a single AI. It is a team of specialists—each owning one domain, challenging each other, making decisions faster.</p>
+
             </div>
           </div>
         </motion.div>
