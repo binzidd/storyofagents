@@ -176,7 +176,6 @@ export default function Hero() {
               <p className="text-gray-600 text-sm leading-relaxed">
                 By 2026, the competitive advantage is not a single AI. It is a team of specialists—each owning one domain, challenging each other, making decisions faster and better than any human or algorithm alone.
                 <strong className="text-gray-900"> AI is not here to take your job. It is here to make you the best version of yourself.</strong>
-                An analyst with five colleagues who never sleep and never miss a detail.
               </p>
             </div>
           </div>
