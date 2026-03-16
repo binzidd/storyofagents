@@ -130,7 +130,7 @@ function TypewriterSQL({ sql, active }: { sql: string; active: boolean }) {
 
   return (
     <div className="code-block text-xs leading-relaxed min-h-[160px] relative">
-      <div dangerouslySetInnerHTML={{ __html: highlight(displayed) }} />
+      <div className="whitespace-pre" dangerouslySetInnerHTML={{ __html: highlight(displayed) }} />
       {active && !done && <span className="inline-block w-1.5 h-3.5 bg-blue-400 ml-0.5 animate-pulse align-middle" />}
     </div>
   );
@@ -150,10 +150,10 @@ function ToolCallDemo() {
     if (playing) return;
     setPlaying(true);
     setPhase(0);
-    [400, 1300, 2400, 3600, 4900].forEach((d, i) =>
+    [600, 2200, 4000, 6000, 8000].forEach((d, i) =>
       setTimeout(() => setPhase(i + 1), d)
     );
-    setTimeout(() => setPlaying(false), 5500);
+    setTimeout(() => setPlaying(false), 9000);
   };
 
   const reset = () => { setPhase(0); setPlaying(false); };
@@ -273,6 +273,20 @@ function ToolCallDemo() {
             </motion.div>
           )}
 
+          {/* Processing indicator — shows between phases */}
+          {playing && phase >= 1 && phase < 5 && (
+            <motion.div key={`dots-${phase}`}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="flex items-center gap-2 px-3 py-2">
+              {[0, 1, 2].map(i => (
+                <motion.div key={i} className="w-1.5 h-1.5 rounded-full bg-violet-400"
+                  animate={{ opacity: [0.2, 1, 0.2], y: [0, -3, 0] }}
+                  transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15 }} />
+              ))}
+              <span className="text-xs text-gray-400 ml-0.5">Agent processing...</span>
+            </motion.div>
+          )}
+
           {/* Step 5 — final answer */}
           {phase >= 5 && (
             <motion.div key="answer" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
@@ -330,7 +344,7 @@ export default function InternPhase() {
   useEffect(() => {
     if (stage !== "sql") return;
     const sql = SQL_QUERIES[activeQ].sql;
-    const ms  = sql.length * 10 + 600;
+    const ms  = sql.length * 10 + 1800;
     const t   = setTimeout(() => setStage("results"), ms);
     return () => clearTimeout(t);
   }, [stage, activeQ]);

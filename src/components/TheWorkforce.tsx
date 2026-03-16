@@ -7,7 +7,7 @@ function FlowAgentViz({ playing, done }: { playing: boolean; done: boolean }) {
 
   useEffect(() => {
     if (!playing) { if (!done) setPhase(0); return; }
-    const delays = [200, 900, 1700, 2600, 3500];
+    const delays = [500, 1800, 3400, 5200, 7000];
     delays.forEach((d, i) => setTimeout(() => setPhase(i + 1), d));
   }, [playing, done]);
 
@@ -110,7 +110,7 @@ function FunctionAgentViz({ playing, done }: { playing: boolean; done: boolean }
 
   useEffect(() => {
     if (!playing) { if (!done) setPhase(0); return; }
-    [300, 1000, 1800, 2800].forEach((d, i) => setTimeout(() => setPhase(i + 1), d));
+    [500, 1800, 3400, 5200].forEach((d, i) => setTimeout(() => setPhase(i + 1), d));
   }, [playing, done]);
 
   const tasks = [
@@ -230,7 +230,7 @@ export default function TheWorkforce() {
     if (flowPlaying) return;
     setFlowPlaying(true);
     setFlowDone(false);
-    setTimeout(() => { setFlowPlaying(false); setFlowDone(true); }, 3500);
+    setTimeout(() => { setFlowPlaying(false); setFlowDone(true); }, 7800);
   };
 
   const resetFlow = () => {
@@ -242,7 +242,7 @@ export default function TheWorkforce() {
     if (funcPlaying) return;
     setFuncPlaying(true);
     setFuncDone(false);
-    setTimeout(() => { setFuncPlaying(false); setFuncDone(true); }, 2800);
+    setTimeout(() => { setFuncPlaying(false); setFuncDone(true); }, 5800);
   };
 
   const resetFunc = () => {
