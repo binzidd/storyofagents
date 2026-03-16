@@ -66,7 +66,7 @@ export default function A2ASection() {
         <div className="text-center mb-14">
           <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-200 bg-violet-50 mb-6">
-            <span className="text-violet-600 text-xs font-semibold tracking-widest uppercase">Phase 06 · Agent-to-Agent</span>
+            <span className="text-violet-600 text-xs font-semibold tracking-widest uppercase">Phase 04 · Agent-to-Agent</span>
           </motion.div>
           <motion.h2 initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             transition={{ duration:0.8 }}

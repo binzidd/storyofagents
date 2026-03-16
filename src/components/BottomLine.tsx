@@ -83,7 +83,7 @@ export default function BottomLine() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-200 bg-violet-50 mb-6">
             <span className="text-violet-700 text-xs font-semibold tracking-widest uppercase">
-              Phase 06 · LLM Observability
+              Phase 05 · LLM Observability
             </span>
           </motion.div>
 
