@@ -5,6 +5,7 @@ import JourneyMap from "@/components/JourneyMap";
 import InternPhase from "@/components/InternPhase";
 import TheWorkforce from "@/components/TheWorkforce";
 import MCPSection from "@/components/MCPSection";
+import MCPToA2ATransition from "@/components/MCPToA2ATransition";
 import A2ASection from "@/components/A2ASection";
 import BottomLine from "@/components/BottomLine";
 import Navigation from "@/components/Navigation";
@@ -19,6 +20,7 @@ export default function Home() {
       <InternPhase />
       <TheWorkforce />
       <MCPSection />
+      <MCPToA2ATransition />
       <A2ASection />
       <BottomLine />
       <Footer />

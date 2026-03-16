@@ -26,6 +26,7 @@ export default function MCPSection() {
   const [viewMode, setViewMode]     = useState<"chaos"|"mcp">("chaos");
   const [activeStep, setActiveStep] = useState(0);
   const [activeSource, setActiveSource] = useState<string|null>(null);
+  const [standardAnimated, setStandardAnimated] = useState(false);
 
   const AI_AGENTS = [
     { label: "Analysis Agent", color: "#3b82f6" },
@@ -52,10 +53,10 @@ export default function MCPSection() {
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
             15 point-to-point integrations<br />
-            <span className="relative inline-block">
+            <span className="relative inline-block cursor-pointer" onClick={() => setStandardAnimated(!standardAnimated)}>
               <span className="text-cyan-600">replaced by one standard.</span>
-              <motion.span initial={{ scaleX:0 }} whileInView={{ scaleX:1 }} viewport={{ once:true }}
-                transition={{ duration:0.8, delay:0.7, ease:"easeOut" }}
+              <motion.span initial={{ scaleX:0 }} animate={standardAnimated ? { scaleX:1 } : { scaleX:0 }}
+                transition={{ duration:0.8, ease:"easeOut" }}
                 className="absolute bottom-1 left-0 h-[4px] bg-cyan-500 rounded-full origin-left block" />
             </span>
           </motion.h2>
