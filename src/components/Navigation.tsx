@@ -7,7 +7,6 @@ const sections = [
   { id: "journey",   label: "Overview",      color: "#64748b" },
   { id: "intern",    label: "Tool Calling",  color: "#8b5cf6" },
   { id: "workforce", label: "Agents",        color: "#10b981" },
-  { id: "langgraph", label: "LangGraph",     color: "#f59e0b" },
   { id: "mcp",       label: "MCP",           color: "#06b6d4" },
   { id: "a2a",       label: "A2A",           color: "#8b5cf6" },
   { id: "roi",       label: "Observability", color: "#6366f1" },

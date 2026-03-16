@@ -22,17 +22,8 @@ const STOPS = [
     description: "The architecture we choose determines whether AI is a reliable processor or an autonomous problem-solver. Both have a role.",
   },
   {
-    id: "langgraph",
-    number: "03",
-    label: "LangGraph",
-    sublabel: "Orchestrated Workflows",
-    icon: "🕸",
-    color: "#f59e0b",
-    description: "Graph-based orchestration with conditional routing, parallel execution, and human-in-the-loop checkpoints. Month-end in 2 days, not 7.",
-  },
-  {
     id: "mcp",
-    number: "04",
+    number: "03",
     label: "Model Context Protocol",
     sublabel: "Universal Enterprise Connector",
     icon: "🔗",
@@ -41,7 +32,7 @@ const STOPS = [
   },
   {
     id: "a2a",
-    number: "05",
+    number: "04",
     label: "Agent-to-Agent",
     sublabel: "The Virtual Firm",
     icon: "🌐",
@@ -50,7 +41,7 @@ const STOPS = [
   },
   {
     id: "roi",
-    number: "06",
+    number: "05",
     label: "LLM Observability",
     sublabel: "Trust Through Visibility",
     icon: "🔭",
@@ -119,7 +110,7 @@ export default function JourneyMap() {
             From Chat.<br />To Autonomous Agents.
           </h2>
           <p className="text-gray-500 text-sm max-w-xl mx-auto mb-8">
-            A journey through six capabilities, each one unlocking the next.
+            A journey through five capabilities, each one unlocking the next.
             Click any stop to navigate, or scroll to explore.
           </p>
 
@@ -131,7 +122,6 @@ export default function JourneyMap() {
               { label:"Chat AI",          icon:"💬", color:"#64748b" },
               { label:"Tool Use",         icon:"🔧", color:"#8b5cf6" },
               { label:"Agent Networks",   icon:"🤖", color:"#10b981" },
-              { label:"Orchestration",    icon:"🕸", color:"#f59e0b" },
               { label:"AI Finance",       icon:"🏦", color:"#3b82f6" },
             ].map((step, i, arr) => (
               <div key={step.label} className="flex items-center gap-1.5">
