@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "The evolution of Generative AI—from transformers to autonomous agent networks. A strategic briefing for finance leaders.",
   openGraph: {
     title: "The AI Evolution | Story of Agents",
-    description: "From ChatGPT to multi-agent networks—the strategic AI briefing for finance.",
+    description: "From ChatGPT to multi-agent networks—the ASB Lunch & Learn session for finance.",
     type: "website",
   },
 };
